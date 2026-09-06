@@ -1,5 +1,0 @@
-# Test-only dependencies. Not installed into the runtime image.
-#   docker exec legalos-backend pip install -r /app/requirements-dev.txt
-#   docker exec legalos-backend python -m pytest tests -q
-pytest==8.3.4
-pytest-asyncio==0.25.0

@@ -1,6 +1,0 @@
-apiVersion: v2
-name: genaiforge
-description: A Helm chart for GenAIForge Risk - Enterprise Risk Management Platform
-type: application
-version: 0.1.0
-appVersion: "1.0.0"

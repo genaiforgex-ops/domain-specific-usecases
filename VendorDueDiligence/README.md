@@ -25,4 +25,4 @@ Accent: teal `#3D8B7A`. Theme toggle. See `BUYER_NOTES.md`. Offline except Googl
 
 ## Product line
 
-Maps to GenAIForge **Risk / Vendor Due Diligence**. Full stack: `Risk/`.
+Maps to GenAIForge **Risk / Vendor Due Diligence**.

@@ -22,4 +22,4 @@ Accent: bronze `#B8956C`. Theme toggle + Demo badge. See `BUYER_NOTES.md` for so
 
 ## Product line
 
-Maps to GenAIForge **Marketing / Campaign Studio**. Full stack: `Marketing/`.
+Maps to GenAIForge **Marketing / Campaign Studio**.

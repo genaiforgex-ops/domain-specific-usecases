@@ -24,4 +24,4 @@ Accent: gold `#C4A035`. Theme toggle. See `BUYER_NOTES.md`. Offline except Googl
 
 ## Product line
 
-Maps to GenAIForge **Legal / LegalOS**. Full stack: `Legal/`.
+Maps to GenAIForge **Legal / LegalOS**.
