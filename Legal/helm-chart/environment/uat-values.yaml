@@ -1,0 +1,134 @@
+backend:
+  replicaCount: 1
+  deploymentStrategy: RollingUpdate
+  image:
+    repository: asia-south1-docker.pkg.dev/agentic-ai-476106/jfs/legalos-backend-uat
+    pullPolicy: Always
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: asia-south1-docker.pkg.dev/agentic-ai-476106/jfs/legalos-frontend-uat
+    pullPolicy: Always
+  autoscaling:
+    enabled: false
+  service:
+    type: ClusterIP
+    port: 3000
+    targetPort: 80
+
+serviceAccount:
+  create: true
+  name: "legalos"
+  annotations:
+    iam.gke.io/gcp-service-account: gke-cloudsql-sa@agentic-ai-476106.iam.gserviceaccount.com
+  automountServiceAccountToken: false
+
+cloudsqlproxy:
+  enabled: true
+  image: "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.0"
+  instanceConnectionName: "agentic-ai-476106:asia-south1:finance-db-uat"
+  port: 5432
+  args:
+    - "--structured-logs"
+    - "--private-ip"
+
+podEnv:
+  - name: LEGALOS_ENV
+    value: "uat"
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: DATABASE_URL
+  - name: CORS_ORIGINS
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: CORS_ORIGINS
+  - name: VITE_API_URL
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: VITE_API_URL
+  - name: GEMINI_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: GEMINI_API_KEY 
+  - name: REDIS_URL
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: REDIS_URL
+  - name: CELERY_BROKER_URL
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: CELERY_BROKER_URL
+  - name: CELERY_RESULT_BACKEND
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: CELERY_RESULT_BACKEND
+  - name: AI_BACKEND
+    value: "adk"
+    
+storage:
+  enabled: true
+  storageClassName: standard-rwo
+  size: 10Gi
+  mountPath: /tmp/legalos-storage
+
+onlyoffice:
+  enabled: true
+  host: onlyoffice-uat.jiofinance.in
+  image:
+    repository: onlyoffice/documentserver
+    tag: "8.3"
+  jwt:
+    existingSecret: officeonly-jwt
+    existingSecretKey: OFFICEONLY-JWT
+  ingress:
+    enabled: true
+    sslRedirect: "false"
+    tlsSecretName: financegpt-jiofinance-com-tls
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "2Gi"
+    limits:
+      cpu: "2"
+      memory: "4Gi"
+  backend:
+    publicUrl: "https://onlyoffice-uat.jiofinance.in"
+    documentBaseUrl: "http://legalos-backend:8000"
+    callbackBaseUrl: "http://legalos-backend:8000"
+    commandBaseUrl: "http://legalos-onlyoffice"
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  host: legalos-uat.jiofinance.in
+  tls:
+    secretName: financegpt-jiofinance-com-tls
+
+virtualservice:
+  enabled: false
+
+sync:
+  secrets:
+    enabled: false

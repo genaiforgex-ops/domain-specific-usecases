@@ -1,0 +1,45 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+*.tsbuildinfo
+
+.vscode/
+.idea/
+.claude/
+.adk/
+**/.adk/
+
+# Local feedback / scratch
+Feedback_Legal.txt
+
+# Document corpora (large / confidential)
+Templates/
+contracts/
+# Staged regulatory PDFs — downloaded from regulator sites, not source code.
+# The manifest that describes them IS committed (backend/config/REGULATORY_*.csv).
+backend/regulatory_corpus/*
+!backend/regulatory_corpus/README.md
+
+# Secrets & credentials — never commit
+service_account*.json
+**/service_account*.json
+*-sa-key.json
+**/*-sa-key.json
+*.pem
+*.p12
+config/legalos-secret*.json
+config/*.json
+!config/*.example.json
+backend/config/.rag_*.json
+dump-jfs-202607271837.sql

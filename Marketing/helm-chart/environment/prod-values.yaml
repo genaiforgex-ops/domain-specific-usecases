@@ -1,0 +1,67 @@
+backend:
+  replicaCount: 2
+  image:
+    repository: example.registry.local/genaiforge/marketing-backend-prod
+    pullPolicy: Always
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: example.registry.local/genaiforge/marketing-frontend-prod
+    pullPolicy: Always
+
+serviceAccount:
+  create: true
+  name: "genaiforge-marketing"
+  annotations: {}
+
+cloudsqlproxy:
+  enabled: false
+  instanceConnectionName: "YOUR_PROJECT:REGION:gf-db-prod"
+
+podEnv:
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: gf-secret
+        key: DATABASE_URL
+  - name: JWT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: gf-secret
+        key: JWT_SECRET
+  - name: GEMINI_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: gf-secret
+        key: GEMINI_API_KEY
+  - name: CORS_ORIGINS
+    valueFrom:
+      secretKeyRef:
+        name: gf-secret
+        key: CORS_ORIGINS
+  - name: SEED_ON_STARTUP
+    value: "false"
+  - name: ENVIRONMENT
+    value: "production"
+  - name: PUBLIC_BASE_URL
+    value: "https://marketing.genaiforge.in"
+  - name: EMAIL_FROM_NAME
+    value: "GenAIForge Marketing"
+  - name: EMAIL_APP_BASE_URL
+    value: "https://marketing.genaiforge.in"
+  - name: EMAIL_API_BASE_URL
+    value: "https://marketing.genaiforge.in"
+
+ingress:
+  enabled: true
+  host: marketing.genaiforge.in
+  tls:
+    secretName: genaiforge-marketing-tls
+
+virtualservice:
+  enabled: false
+
+sync:
+  secrets:
+    enabled: false

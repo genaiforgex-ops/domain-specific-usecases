@@ -1,0 +1,251 @@
+name: CI-CD LegalOS
+
+on:
+  push:
+    branches:
+      - dev
+      - uat
+      - prod
+  workflow_dispatch:
+
+env:
+  HELM_CHART_PATH: ./helm-chart
+  RELEASE_NAME: legalos
+  NAMESPACE: legalos
+
+jobs:
+  helm-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint Helm chart
+        run: helm lint ${{ env.HELM_CHART_PATH }} --strict
+
+  python-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pyupio/safety-action@v1.0.1
+        with:
+          api-key: ${{ secrets.SAFETY_API_KEY }}
+        continue-on-error: true
+
+  build-push-trivy:
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.sha.outputs.SHORT_SHA }}
+      backend_image: ${{ steps.set-image.outputs.BACKEND_IMAGE }}
+      frontend_image: ${{ steps.set-image.outputs.FRONTEND_IMAGE }}
+    env:
+      GKE_PROJECT: ${{
+        github.ref_name == 'prod' && secrets.GKE_PROD_PROJECT ||
+        github.ref_name == 'dev' && secrets.GKE_DEV_PROJECT ||
+        secrets.GKE_PROJECT_UAT }}
+      GOOGLE_CREDENTIALS: ${{
+        github.ref_name == 'prod' && secrets.GOOGLE_CREDENTIALS_PROD ||
+        github.ref_name == 'dev' && secrets.GOOGLE_CREDENTIALS_DEV ||
+        secrets.GOOGLE_CREDENTIALS_UAT }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate Short SHA
+        id: sha
+        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Set Dynamic Image Names
+        id: set-image
+        run: |
+          BACKEND="asia-south1-docker.pkg.dev/${{ env.GKE_PROJECT }}/jfs/legalos-backend-${{ github.ref_name }}"
+          FRONTEND="asia-south1-docker.pkg.dev/${{ env.GKE_PROJECT }}/jfs/legalos-frontend-${{ github.ref_name }}"
+          echo "BACKEND_IMAGE=$BACKEND" >> $GITHUB_OUTPUT
+          echo "FRONTEND_IMAGE=$FRONTEND" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: asia-south1-docker.pkg.dev
+          username: _json_key
+          password: ${{ env.GOOGLE_CREDENTIALS }}
+
+      - name: Build and Push backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ steps.set-image.outputs.BACKEND_IMAGE }}:${{ steps.sha.outputs.SHORT_SHA }}
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
+
+      - name: Build and Push frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ steps.set-image.outputs.FRONTEND_IMAGE }}:${{ steps.sha.outputs.SHORT_SHA }}
+          build-args: |
+            VITE_API_URL=
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
+
+      - name: Run Trivy on backend
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          image-ref: ${{ steps.set-image.outputs.BACKEND_IMAGE }}:${{ steps.sha.outputs.SHORT_SHA }}
+          ignore-unfixed: true
+          format: table
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+
+      - name: Run Trivy on frontend
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          image-ref: ${{ steps.set-image.outputs.FRONTEND_IMAGE }}:${{ steps.sha.outputs.SHORT_SHA }}
+          ignore-unfixed: true
+          format: table
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+
+  deploy-dev:
+    needs: build-push-trivy
+    environment: dev
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS_DEV }}
+
+      - name: Get Dev GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_DEV_CLUSTER }}
+          location: ${{ secrets.GKE_DEV_LOCATION }}
+          project_id: ${{ secrets.GKE_DEV_PROJECT }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Deploy to dev
+        run: |
+          helm upgrade --install ${{ env.RELEASE_NAME }} ${{ env.HELM_CHART_PATH }} \
+            --namespace ${{ env.NAMESPACE }} --create-namespace \
+            -f ./helm-chart/environment/dev-values.yaml \
+            --set backend.image.tag=${{ needs.build-push-trivy.outputs.image_tag }} \
+            --set frontend.image.tag=${{ needs.build-push-trivy.outputs.image_tag }} \
+            --wait --timeout=5m --rollback-on-failure
+
+  deploy-uat:
+    needs: build-push-trivy
+    environment: uat
+    if: github.ref == 'refs/heads/uat'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS_UAT }}
+
+      - name: Get UAT GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME_UAT }}
+          location: ${{ secrets.GKE_LOCATION_UAT }}
+          project_id: ${{ secrets.GKE_PROJECT_UAT }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Deploy to UAT
+        run: |
+          helm upgrade --install ${{ env.RELEASE_NAME }} ${{ env.HELM_CHART_PATH }} \
+            --namespace ${{ env.NAMESPACE }} --create-namespace \
+            -f ./helm-chart/environment/uat-values.yaml \
+            --set backend.image.tag=${{ needs.build-push-trivy.outputs.image_tag }} \
+            --set frontend.image.tag=${{ needs.build-push-trivy.outputs.image_tag }} \
+            # --wait --timeout=5m --rollback-on-failure
+
+  deploy-preprod:
+    needs: build-push-trivy
+    environment: preprod
+    if: github.ref == 'refs/heads/preprod'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS_PREPROD || secrets.GOOGLE_CREDENTIALS_UAT }}
+
+      - name: Get Preprod GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_PREPROD_CLUSTER }}
+          location: ${{ secrets.GKE_PREPROD_LOCATION }}
+          project_id: ${{ secrets.GKE_PROJECT_UAT }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Deploy to preprod
+        run: |
+          helm upgrade --install ${{ env.RELEASE_NAME }} ${{ env.HELM_CHART_PATH }} \
+            --namespace ${{ env.NAMESPACE }} --create-namespace \
+            -f ./helm-chart/environment/preprod-values.yaml \
+            --set backend.image.repository=${{ needs.build-push-trivy.outputs.backend_image }} \
+            --set backend.image.tag=${{ needs.build-push-trivy.outputs.image_tag }} \
+            --set frontend.image.repository=${{ needs.build-push-trivy.outputs.frontend_image }} \
+            --set frontend.image.tag=${{ needs.build-push-trivy.outputs.image_tag }} \
+            --wait --timeout=5m --rollback-on-failure
+
+  deploy-production:
+    needs: build-push-trivy
+    environment: prod
+    if: github.ref == 'refs/heads/prod'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS_PROD }}
+
+      - name: Get Prod GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_PROD_CLUSTER }}
+          location: ${{ secrets.GKE_PROD_LOCATION }}
+          project_id: ${{ secrets.GKE_PROD_PROJECT }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Deploy to production
+        run: |
+          helm upgrade --install ${{ env.RELEASE_NAME }} ${{ env.HELM_CHART_PATH }} \
+            --namespace ${{ env.NAMESPACE }} --create-namespace \
+            -f ./helm-chart/environment/prod-values.yaml \
+            --set backend.image.repository=${{ needs.build-push-trivy.outputs.backend_image }} \
+            --set backend.image.tag=${{ needs.build-push-trivy.outputs.image_tag }} \
+            --set frontend.image.repository=${{ needs.build-push-trivy.outputs.frontend_image }} \
+            --set frontend.image.tag=${{ needs.build-push-trivy.outputs.image_tag }} \
+            --wait --timeout=5m --rollback-on-failure

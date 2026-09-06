@@ -1,0 +1,51 @@
+# GenAIForge Marketing — local full-stack preview.
+#
+#   docker compose up --build        # start db + backend + frontend
+#   docker compose down              # stop (keeps the DB volume)
+#   docker compose down -v           # stop AND wipe the DB (clean slate)
+#
+# The backend runs `alembic upgrade head` on startup, then seeds five role
+# accounts (cw/ml/pl/ds/admin @ genaiforge.in) with SEED_PASSWORD from .env.
+#
+# App: http://localhost:5180  (frontend nginx proxies /api → backend:8000)
+# Login e.g. pl@genaiforge.in / demo1234
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: orchestration
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    # DB is only reached by the backend on the compose network — no host bind
+    # (avoids clashing with a local Postgres already on :5432).
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d orchestration"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/orchestration
+      SEED_ON_STARTUP: "true"
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "5180:80"
+
+volumes:
+  db-data:

@@ -1,0 +1,101 @@
+backend:
+  replicaCount: 2
+  image:
+    repository: genaiforge/local
+    pullPolicy: Always
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: genaiforge/local
+    pullPolicy: Always
+  autoscaling:
+    enabled: false
+
+serviceAccount:
+  create: true
+  name: "genaiforge"
+  annotations:
+    iam.gke.io/gcp-service-account: gke-cloudsql-sa@genaiforge.iam.gserviceaccount.com
+  automountServiceAccountToken: false
+
+cloudsqlproxy:
+  enabled: true
+  image: "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.0"
+  instanceConnectionName: "genaiforge:asia-south1:finance-db-dev"
+  port: 5432
+  args:
+    - "--structured-logs"
+    - "--private-ip"
+
+podEnv:
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: genaiforge-secret
+        key: DATABASE_URL
+  - name: CORS_ORIGINS
+    valueFrom:
+      secretKeyRef:
+        name: genaiforge-secret
+        key: CORS_ORIGINS
+  - name: VITE_API_URL
+    valueFrom:
+      secretKeyRef:
+        name: genaiforge-secret
+        key: VITE_API_URL
+  - name: GEMINI_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: genaiforge-secret
+        key: GEMINI_API_KEY
+  # Origin used to build the absolute form link in outbound email.
+  # FRONTEND_BASE_URL is blank here (one ingress serves frontend and backend), so
+  # this is the fallback the link is built from — without it the email would
+  # carry a bare /my-forms/... path that cannot be opened.
+  # Matches this chart's ingress host, which preprod shares with dev.
+  - name: PUBLIC_BASE_URL
+    value: "https://genaiforge-dev.genaiforge.local"
+  # Email (Google Workspace SMTP), used by the form assign/reminder flow.
+  # SMTP_FROM must equal SMTP_USERNAME or be a verified alias of it, or Gmail
+  # rewrites the From header.
+  # SMTP_PASSWORD is deliberately NOT mirrored into genaiforge-secret: it is a Google
+  # NOTE: outbound TCP 587 must be permitted from the cluster. If it is not,
+  # every send fails with a connection timeout while the code looks correct.
+  - name: EMAIL_ADAPTER
+    value: "smtp"
+  - name: SMTP_HOST
+    value: "smtp.gmail.com"
+  - name: SMTP_PORT
+    value: "587"
+  - name: SMTP_FROM
+    value: "noreply@genaiforge.local"
+  - name: SMTP_USERNAME
+    value: "noreply@genaiforge.local"
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  host: genaiforge-dev.genaiforge.local
+  tls:
+    secretName: genaiforge-tls
+
+virtualservice:
+  enabled: false
+
+sync:
+  secrets:
+    enabled: false

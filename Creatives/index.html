@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · Campaign Studio</title>
+    <meta name="description" content="Client demo: agentic briefs, copy, banners, and staged creative approvals." />
+    <meta name="theme-color" content="#0B0C10" id="themeColorMeta" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        if (t === "light") document.documentElement.classList.add("gf-theme-light");
+        else document.documentElement.classList.add("gf-theme-dark");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="assets/data.js" defer></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <div class="shell" id="app">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <div class="brand-mark" aria-hidden="true">G</div>
+          <div class="brand-text">
+            <span class="brand-name">GenAIForge</span>
+            <span class="brand-product">Campaign Studio</span>
+          </div>
+        </a>
+
+        <nav class="side-nav">
+          <p class="nav-label">Workspace</p>
+          <button type="button" class="nav-item active" data-panel="home">Home</button>
+          <button type="button" class="nav-item" data-panel="briefs">Briefs <span class="nav-count" id="navBriefs">0</span></button>
+          <button type="button" class="nav-item" data-panel="copies">Copies <span class="nav-count" id="navCopies">0</span></button>
+          <button type="button" class="nav-item" data-panel="design">Design</button>
+          <button type="button" class="nav-item" data-panel="calendar">Calendar</button>
+          <button type="button" class="nav-item" data-panel="assets">Assets</button>
+          <p class="nav-label">Intelligence</p>
+          <button type="button" class="nav-item" data-panel="guardrails">Guardrails</button>
+          <button type="button" class="nav-item" data-panel="performance">Performance</button>
+          <button type="button" class="nav-item" data-panel="inbox">Inbox <span class="nav-count" id="navInbox">0</span></button>
+          <p class="nav-label">Governance</p>
+          <button type="button" class="nav-item" data-panel="approvals">Approvals <span class="nav-count" id="navApprovals">0</span></button>
+          <button type="button" class="nav-item" data-panel="activity">Activity</button>
+          <button type="button" class="nav-item" data-panel="roi">ROI / Buy</button>
+        </nav>
+
+        <div class="side-foot">
+          <span class="badge badge-demo">Demo data</span>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <div>
+            <h1 class="page-title" id="pageTitle">Home</h1>
+            <p class="page-sub" id="pageSub">Role-scoped campaign overview</p>
+          </div>
+          <div class="topbar-controls">
+            <div class="field">
+              <label for="roleSelect">Role</label>
+              <select id="roleSelect"></select>
+            </div>
+            <button type="button" id="themeToggle" class="btn btn-ghost" aria-label="Toggle theme">
+              <span class="theme-sun">☀</span><span class="theme-moon">☾</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="content">
+          <div class="pitch-strip" id="pitchStrip"></div>
+
+          <!-- HOME -->
+          <section class="view" id="view-home" data-view>
+            <div class="hero-pitch card" id="heroPitch"></div>
+            <div class="home-grid">
+              <div class="card" id="personaCard"></div>
+              <div class="card">
+                <div class="card-head">
+                  <div>
+                    <h2>14-day activity</h2>
+                    <p>Shipments &amp; handoffs for this role</p>
+                  </div>
+                </div>
+                <div class="spark-wrap" id="sparkWrap"></div>
+              </div>
+            </div>
+            <div class="kpi-row" id="kpiRow"></div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Numbered client tour</h2>
+                  <p>Open each panel in buyer order — one click</p>
+                </div>
+              </div>
+              <div class="tour-grid" id="tourGrid"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Queue by stage</h2>
+                  <p>Live pipeline density across the studio</p>
+                </div>
+              </div>
+              <div class="stage-counts" id="stageCounts"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Today’s focus</h2>
+                  <p>Deep-links preserve the selected brief context</p>
+                </div>
+              </div>
+              <div class="focus-cards" id="focusCards"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Marketing news pulse</h2>
+                  <p>Real public stories · demo/illustrative citations · GenAIForge next actions</p>
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" data-goto="inbox">Open Inbox</button>
+              </div>
+              <div class="news-feed" id="newsFeed"></div>
+            </div>
+          </section>
+
+          <!-- BRIEFS -->
+          <section class="view" id="view-briefs" data-view hidden>
+            <div class="split">
+              <div class="card list-card">
+                <div class="card-head"><h2>All briefs</h2><p id="briefListMeta">—</p></div>
+                <ul class="item-list" id="briefList"></ul>
+              </div>
+              <div class="card">
+                <div class="card-head">
+                  <div>
+                    <h2 id="briefTitle">—</h2>
+                    <p id="briefMeta">—</p>
+                  </div>
+                  <span class="chip" id="briefStatus">—</span>
+                </div>
+                <div class="stage-rail" id="stageRail"></div>
+                <dl class="brief-fields" id="briefFields"></dl>
+                <div class="mini-feed" id="briefComments"></div>
+                <div class="row-actions">
+                  <button type="button" class="btn btn-accent" id="advanceStageBtn">Advance stage</button>
+                  <button type="button" class="btn btn-ghost" data-goto="copies">Jump to Copies</button>
+                  <button type="button" class="btn btn-ghost" data-goto="design">Jump to Design</button>
+                  <button type="button" class="btn btn-ghost" data-goto="approvals">Jump to Approvals</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- COPIES -->
+          <section class="view" id="view-copies" data-view hidden>
+            <div class="split">
+              <div class="card list-card">
+                <div class="card-head">
+                  <div>
+                    <h2>Copy queue</h2>
+                    <p id="queueSub">—</p>
+                  </div>
+                </div>
+                <div class="queue-tabs" id="queueTabs">
+                  <button type="button" class="queue-tab active" data-q="waiting">Waiting</button>
+                  <button type="button" class="queue-tab" data-q="done">Done</button>
+                </div>
+                <ul class="item-list" id="roleQueue"></ul>
+              </div>
+              <div class="card">
+                <div class="card-head">
+                  <div>
+                    <h2>AI draft vs edited</h2>
+                    <p id="copyBriefName">—</p>
+                  </div>
+                  <button type="button" class="btn btn-ghost btn-sm" id="regenCopyBtn">Regenerate AI</button>
+                </div>
+                <div class="copy-compare" id="copyCompare"></div>
+                <div class="form-stack">
+                  <label>Headline<input type="text" id="copyHeadline" maxlength="80" /><span class="char-count" id="hlCount"></span></label>
+                  <label>Body<textarea id="copyBody" rows="4" maxlength="280"></textarea><span class="char-count" id="bodyCount"></span></label>
+                  <label>CTA<input type="text" id="copyCta" maxlength="40" /><span class="char-count" id="ctaCount"></span></label>
+                  <div class="row-actions" style="padding:0">
+                    <button type="button" class="btn btn-accent" id="saveCopyBtn">Save copy</button>
+                    <button type="button" class="btn btn-ghost" data-goto="design">Continue to Design</button>
+                  </div>
+                </div>
+                <ul class="version-list" id="versionList"></ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- DESIGN -->
+          <section class="view" id="view-design" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Design workspace</h2>
+                  <p id="designBriefName">Multi-step · template · heroes · export</p>
+                </div>
+              </div>
+              <div class="stepper" id="designStepper"></div>
+              <div id="designStepBody"></div>
+            </div>
+          </section>
+
+          <!-- APPROVALS -->
+          <section class="view" id="view-approvals" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Approval gates</h2>
+                  <p>Brief review · Creative review · Final sign-off — <span id="gateBriefName">—</span></p>
+                </div>
+              </div>
+              <div class="gates" id="gates"></div>
+            </div>
+          </section>
+
+          <!-- ACTIVITY -->
+          <section class="view" id="view-activity" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Activity timeline</h2>
+                  <p id="activityBriefName">Handoffs on the selected brief</p>
+                </div>
+              </div>
+              <ol class="timeline" id="timeline"></ol>
+            </div>
+          </section>
+
+          <!-- CALENDAR -->
+          <section class="view" id="view-calendar" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Campaign calendar / launch plan</h2>
+                  <p>Channels · dates · asset readiness</p>
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" id="calExportBtn">Export plan</button>
+              </div>
+              <div class="cal-board" id="calBoard"></div>
+            </div>
+          </section>
+
+          <!-- GUARDRAILS -->
+          <section class="view" id="view-guardrails" data-view hidden>
+            <div class="split">
+              <div class="card" id="guardLeft"></div>
+              <div class="card" id="guardRight"></div>
+            </div>
+            <div class="card" id="guardRaci"></div>
+          </section>
+
+          <!-- PERFORMANCE -->
+          <section class="view" id="view-performance" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Performance loop</h2>
+                  <p>Post-launch learnings + cited market context → next brief</p>
+                </div>
+              </div>
+              <div id="perfBoard"></div>
+            </div>
+          </section>
+
+          <!-- ASSETS -->
+          <section class="view" id="view-assets" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Approved asset library</h2>
+                  <p>Reuse banners · preserve brief context</p>
+                </div>
+                <button type="button" class="btn btn-accent btn-sm" id="reuseAssetBtn">Reuse selected</button>
+              </div>
+              <div class="asset-grid" id="assetGrid"></div>
+            </div>
+          </section>
+
+          <!-- INBOX -->
+          <section class="view" id="view-inbox" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Inbox · mentions + industry pulse</h2>
+                  <p>@mentions with SLAs · real marketing headlines with GenAIForge actions</p>
+                </div>
+              </div>
+              <div id="inboxList"></div>
+            </div>
+          </section>
+
+          <!-- ROI -->
+          <section class="view" id="view-roi" data-view hidden>
+            <div id="roiBoard"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <div id="modalHost"></div>
+  </body>
+</html>

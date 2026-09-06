@@ -1,0 +1,15 @@
+GenAIForge Risk has been deployed successfully!
+
+Application URL:
+  https://{{ .Values.ingress.host }}
+
+Services deployed:
+  - Backend API:  {{ include "genaiforge.fullname" . }}-backend:{{ .Values.backend.service.port }}
+  - Frontend:     {{ include "genaiforge.fullname" . }}-frontend:{{ .Values.frontend.service.port }}
+
+To verify the deployment:
+  kubectl get pods -n {{ .Release.Namespace }} -l app.kubernetes.io/instance={{ .Release.Name }}
+
+To view logs:
+  kubectl logs -n {{ .Release.Namespace }} -l app.kubernetes.io/component=backend
+  kubectl logs -n {{ .Release.Namespace }} -l app.kubernetes.io/component=frontend

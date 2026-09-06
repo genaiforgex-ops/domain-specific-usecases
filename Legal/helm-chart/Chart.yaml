@@ -1,0 +1,6 @@
+apiVersion: v2
+name: legalos
+description: A Helm chart for LegalOS - Enterprise Legal Management Platform
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

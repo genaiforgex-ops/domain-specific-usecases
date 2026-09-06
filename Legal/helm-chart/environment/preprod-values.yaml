@@ -1,0 +1,85 @@
+backend:
+  replicaCount: 2
+  image:
+    repository: asia-south1-docker.pkg.dev/agentic-ai-476106/jfs/legalos-backend
+    pullPolicy: Always
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: asia-south1-docker.pkg.dev/agentic-ai-476106/jfs/legalos-frontend
+    pullPolicy: Always
+  autoscaling:
+    enabled: false
+
+serviceAccount:
+  create: true
+  name: "legalos"
+  annotations:
+    iam.gke.io/gcp-service-account: gke-cloudsql-sa@agentic-ai-476106.iam.gserviceaccount.com
+  automountServiceAccountToken: false
+
+cloudsqlproxy:
+  enabled: true
+  image: "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.0"
+  instanceConnectionName: "agentic-ai-476106:asia-south1:finance-db-uat"
+  port: 5432
+  args:
+    - "--structured-logs"
+    - "--private-ip"
+
+podEnv:
+  - name: LEGALOS_ENV
+    value: "preprod"
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: DATABASE_URL
+  - name: JWT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: JWT_SECRET
+  - name: CORS_ORIGINS
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: CORS_ORIGINS
+  - name: GEMINI_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: GEMINI_API_KEY
+  - name: AI_BACKEND
+    valueFrom:
+      secretKeyRef:
+        name: legalos-secret
+        key: AI_BACKEND
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  host: legalos-preprod.jiofinance.in
+  tls:
+    secretName: financegpt-jiofinance-com-tls
+
+virtualservice:
+  enabled: false
+
+sync:
+  secrets:
+    enabled: false

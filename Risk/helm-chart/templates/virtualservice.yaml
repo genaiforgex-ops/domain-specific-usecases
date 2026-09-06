@@ -1,0 +1,46 @@
+{{- if and .Values.virtualservice .Values.virtualservice.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "genaiforge.fullname" . }}
+  labels:
+    {{- include "genaiforge.labels" . | nindent 4 }}
+spec:
+  hosts:
+    - '{{ .Values.virtualservice.host }}'
+  gateways:
+    - {{ .Values.virtualservice.gateway }}
+  http:
+    - match:
+        - uri:
+            prefix: {{ .Values.virtualservice.apiPrefix }}
+      rewrite:
+        uri: /
+      headers:
+        response:
+          remove:
+            - server
+      route:
+        - destination:
+            host: {{ include "genaiforge.fullname" . }}-backend
+            port:
+              number: {{ .Values.virtualservice.backendPort }}
+      retries:
+        attempts: 3
+        perTryTimeout: {{ .Values.virtualservice.perTryTimeout | default "120s" }}
+        retryOn: connect-failure,refused-stream,reset,504
+      timeout: {{ .Values.virtualservice.timeout | default "600s" }}
+    - match:
+        - uri:
+            prefix: {{ .Values.virtualservice.prefix }}
+      headers:
+        response:
+          remove:
+            - server
+      route:
+        - destination:
+            host: {{ include "genaiforge.fullname" . }}-frontend
+            port:
+              number: {{ .Values.virtualservice.frontendPort }}
+      timeout: {{ .Values.virtualservice.timeout | default "600s" }}
+{{- end }}

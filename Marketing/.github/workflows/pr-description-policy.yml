@@ -1,0 +1,22 @@
+name: PR Description Check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  check-description:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR description
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body;
+            if (!body || body.trim().length < 20) {
+              core.setFailed(
+                "Pull Request description is required (minimum 20 characters)."
+              );
+            } else {
+              console.log("PR description looks good.");
+            }

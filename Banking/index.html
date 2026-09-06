@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · BFSI Voice Command Center</title>
+    <meta
+      name="description"
+      content="Client demo: AI Advisory & Collections voice agent — ROI, DPD playbooks, customer 360, RBI/SEBI compliance."
+    />
+    <meta name="theme-color" content="#070b12" id="themeColorMeta" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        if (t === "light") document.documentElement.classList.add("gf-theme-light");
+        else document.documentElement.classList.add("gf-theme-dark");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="assets/data.js" defer></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.4" />
+              <path d="M8 14c1.2-2 2.4-3 4-3s2.8 1 4 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">GenAIForge</span>
+            <span class="brand-product">BFSI · Voice Command Center</span>
+          </div>
+        </a>
+
+        <div class="topbar-spacer"></div>
+
+        <div class="topbar-controls">
+          <div class="field">
+            <label for="campaignSelect">Campaign</label>
+            <select id="campaignSelect"></select>
+          </div>
+          <div class="field">
+            <label for="regionSelect">Region</label>
+            <select id="regionSelect"></select>
+          </div>
+          <button type="button" id="themeToggle" class="btn btn-ghost" aria-label="Toggle theme">
+            <span class="theme-sun">☀</span><span class="theme-moon">☾</span>
+          </button>
+          <span class="badge badge-demo">Demo data</span>
+        </div>
+      </header>
+
+      <!-- ROI Hero -->
+      <section class="hero" aria-label="Executive ROI">
+        <div class="hero-inner">
+          <p class="hero-eyebrow" id="heroCampaign">Collections 30+ DPD</p>
+          <h1 class="hero-title">Voice agent that scales compliant outreach</h1>
+          <p class="hero-sub">
+            Hindi + regional · RBI / SEBI rails · 10× conversations · human cost saved
+          </p>
+          <div class="hero-proof" id="heroProof">
+            <div class="proof">
+              <strong id="proofSaved">₹4.8 L</strong>
+              <span>Human cost saved today</span>
+            </div>
+            <div class="proof">
+              <strong id="proofCalls">1842</strong>
+              <span>Calls today</span>
+            </div>
+            <div class="proof">
+              <strong id="proofAudit">100%</strong>
+              <span>Calls audited</span>
+            </div>
+          </div>
+          <div class="hero-actions">
+            <button type="button" class="btn btn-accent btn-lg" id="startDemoBtn">Start live demo call</button>
+            <div class="lang-strip" id="langStrip"></div>
+          </div>
+          <p class="hero-cost" id="heroCost">AI ₹4.90 / call vs human ₹12.40 — illustrative</p>
+        </div>
+      </section>
+
+      <main class="main">
+        <!-- Intelligence -->
+        <section class="intel panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Campaign intelligence</h2>
+              <p class="panel-sub">DPD / stage playbooks · volume · cure %</p>
+            </div>
+            <div class="intel-meta" id="intelMeta"></div>
+          </div>
+          <div class="funnel" id="dpdFunnel"></div>
+          <div class="trend-row">
+            <span class="trend-label">14-day connect trend</span>
+            <div class="spark" id="connectSpark" aria-hidden="true"></div>
+            <span class="trend-val" id="connectRate">41% connect</span>
+          </div>
+        </section>
+
+        <!-- Live floor -->
+        <section class="floor" id="liveFloor">
+          <div class="floor-main">
+            <article class="panel stage">
+              <div class="stage-top">
+                <div class="stage-live">
+                  <span class="live-dot"></span>
+                  <span id="stageLabel">NOW TALKING</span>
+                </div>
+                <div class="call-timer" id="callTimer">00:00</div>
+              </div>
+
+              <div class="stage-grid">
+                <div class="caller-block">
+                  <div class="caller-name" id="callerName">Select a call</div>
+                  <div class="caller-chips" id="callerChips"></div>
+                  <div class="waveform" id="waveform" aria-hidden="true"></div>
+                </div>
+
+                <aside class="card360" id="card360">
+                  <h3 class="card360-title">Customer 360 · LMS</h3>
+                  <dl class="card360-grid" id="card360Body">
+                    <div><dt>Product</dt><dd>—</dd></div>
+                    <div><dt>Outstanding</dt><dd>—</dd></div>
+                    <div><dt>Bucket</dt><dd>—</dd></div>
+                    <div><dt>Last pay</dt><dd>—</dd></div>
+                    <div><dt>Consent</dt><dd>—</dd></div>
+                    <div><dt>DND</dt><dd>—</dd></div>
+                  </dl>
+                </aside>
+              </div>
+
+              <div class="disclaimer" id="disclaimer" role="note"></div>
+
+              <div class="transcript" id="transcript" role="log" aria-live="polite"></div>
+
+              <div class="outcome-bar" id="outcomeBar"></div>
+
+              <div class="script-row">
+                <button type="button" class="btn btn-accent" id="advanceBtn" disabled>Advance conversation</button>
+                <button type="button" class="btn btn-ghost" id="resetCallBtn" disabled>Restart call</button>
+                <div class="outcome-tags" id="outcomeTags"></div>
+              </div>
+            </article>
+
+            <!-- Compliance cockpit -->
+            <div class="compliance" id="complianceStrip">
+              <div class="comp-item"><span>Calling window</span><strong id="compWindow">08:00–19:00 IST</strong></div>
+              <div class="comp-item"><span>Recording</span><strong id="compRec">Disclosed</strong></div>
+              <div class="comp-item"><span>PII</span><strong id="compPii">Masked</strong></div>
+              <div class="comp-item"><span>DND</span><strong id="compDnd">Scrubbed</strong></div>
+              <div class="comp-item"><span>Audit hash</span><strong class="mono" id="compHash">—</strong></div>
+            </div>
+          </div>
+
+          <aside class="panel queue-panel">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Dial queue</h2>
+                <p class="panel-sub">Click to join · regional languages</p>
+              </div>
+            </div>
+            <ul class="queue" id="dialQueue"></ul>
+            <div class="queue-foot" id="queueFoot"></div>
+          </aside>
+        </section>
+
+        <!-- Handoff card (hardship) -->
+        <aside class="handoff" id="handoffCard" hidden>
+          <div class="handoff-head">
+            <h3>Human escalation · hardship</h3>
+            <button type="button" class="btn btn-ghost btn-sm" id="handoffClose">✕</button>
+          </div>
+          <p id="handoffBody"></p>
+        </aside>
+      </main>
+
+      <footer class="site-footer">
+        <p>GenAIForge — AI Advisory &amp; Collections Voice Agent · 24/7 · 10× · 100% audited</p>
+        <p>
+          <a href="https://genaiforge.in" target="_blank" rel="noopener">genaiforge.in</a>
+          ·
+          <a href="mailto:contactus@genaiforge.in">contactus@genaiforge.in</a>
+        </p>
+      </footer>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+  </body>
+</html>

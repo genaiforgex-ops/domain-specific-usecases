@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · Insurance · Agentic Claims &amp; FNOL</title>
+    <meta
+      name="description"
+      content="Agentic claims processing & FNOL — multi-channel intake, extract/validate/assess, auto-settle or route adjuster. Days→Mins, 70% less manual, 24/7."
+    />
+    <meta name="theme-color" content="#0e141c" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        if (t !== "light" && t !== "dark") {
+          t = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        document.documentElement.setAttribute("data-theme", t);
+        if (t === "light") {
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#f4f0e8");
+        }
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="assets/data.js" defer></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header class="header">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 3L4 9v12h16V9L12 3z"
+                stroke="#2aa198"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <path d="M9 21V12h6v9" stroke="#2aa198" stroke-width="1.4" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">GenAIForge</span>
+            <span class="brand-product">Insurance · Agentic Claims &amp; FNOL</span>
+          </div>
+        </a>
+
+        <div class="header-stats">
+          <span class="stat-pill"><strong>Days → Mins</strong> first response</span>
+          <span class="stat-pill"><strong>70%</strong> less manual</span>
+          <span class="stat-pill stat-live">24/7 intake</span>
+        </div>
+
+        <div class="header-controls">
+          <div class="field">
+            <label for="lobSelect">LOB</label>
+            <select id="lobSelect" aria-label="Line of business"></select>
+          </div>
+          <button
+            type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Switch to light mode"
+            title="Toggle light / dark mode"
+          >
+            <span class="theme-icon theme-icon-light" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+                <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.4" />
+                <path
+                  d="M10 2v2M10 16v2M4.93 4.93l1.41 1.41M13.66 13.66l1.41 1.41M2 10h2M16 10h2M4.93 15.07l1.41-1.41M13.66 6.34l1.41-1.41"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+            <span class="theme-icon theme-icon-dark" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+                <path
+                  d="M15.5 11.5a6.5 6.5 0 01-9-9 8 8 0 109 9z"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <span class="badge badge-demo">Demo</span>
+          <time class="clock" id="clock" datetime=""></time>
+        </div>
+      </header>
+
+      <!-- Stage rail -->
+      <nav class="stage-rail" id="stageRail" aria-label="Claim processing stages">
+        <div class="stage-progress" id="stageProgress" aria-hidden="true">
+          <div class="stage-progress-fill" id="stageProgressFill"></div>
+        </div>
+        <div class="stage-rail-inner" id="stageRailInner"></div>
+      </nav>
+
+      <!-- Main workspace -->
+      <main class="workspace">
+        <!-- Slim claim picker -->
+        <aside class="claim-picker" aria-label="Claims list">
+          <div class="claim-picker-head">
+            <h2>Claims</h2>
+            <span class="claim-count" id="claimCount"></span>
+          </div>
+          <ul class="claim-list" id="claimList" role="listbox"></ul>
+        </aside>
+
+        <!-- Split view: documents + extraction -->
+        <section class="split-view" aria-label="Claim workspace">
+          <!-- Inline agent insight (shown on claim select) -->
+          <div class="agent-insight" id="agentInsight" hidden>
+            <div class="agent-insight-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4" />
+                <path d="M10 6v4l2.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="agent-insight-body">
+              <span class="agent-insight-label" id="insightAgent"></span>
+              <p class="agent-insight-text" id="insightText"></p>
+            </div>
+          </div>
+
+          <div class="split-panes">
+            <!-- Left: paper documents -->
+            <div class="pane pane-paper">
+              <div class="pane-head">
+                <h3>Source documents</h3>
+                <div class="doc-tabs" id="docTabs" role="tablist"></div>
+              </div>
+              <div class="paper-stack" id="paperStack"></div>
+            </div>
+
+            <!-- Right: extracted fields -->
+            <div class="pane pane-extract">
+              <div class="pane-head">
+                <h3 id="extractTitle">Extracted fields</h3>
+                <span class="extract-confidence" id="extractConfidence"></span>
+              </div>
+              <div class="field-list" id="fieldList"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Agent timeline -->
+        <aside class="agent-timeline" aria-label="Multi-agent activity">
+          <div class="timeline-head">
+            <h2>Agent activity</h2>
+            <span class="timeline-sub">Orchestration trail</span>
+          </div>
+          <ol class="timeline" id="agentTimeline" role="log" aria-live="polite"></ol>
+        </aside>
+      </main>
+
+      <!-- Human-in-the-loop bar -->
+      <footer class="hitl-bar" id="hitlBar">
+        <div class="hitl-context" id="hitlContext">
+          <span class="hitl-empty">Select a claim to review AI recommendation</span>
+        </div>
+        <div class="hitl-actions" id="hitlActions" hidden>
+          <button type="button" class="btn btn-ghost" id="btnEscalate">
+            Escalate to adjuster
+          </button>
+          <button type="button" class="btn btn-primary" id="btnApprove">
+            Approve settle
+          </button>
+        </div>
+      </footer>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+  </body>
+</html>
