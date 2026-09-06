@@ -1,61 +1,69 @@
 # GenAIForge · Real Estate Sales Command Center
 
-Premium client demo for **24/7 lead qualification, site-visit booking, and right buyer → right unit matching**.
+Sales demo for **24/7 lead qualification**, site-visit booking, and matching the right buyer to the right unit — with live voice qualify and site-plan heat.
+
+**Who it is for:** Developer sales heads, CRM / digital sales, and channel partners evaluating voice + matching AI for project inventory.
 
 ---
 
-## Open
+## What this demo shows
+
+- Full-bleed project photography with speed and live-voice proof
+- City switcher: Pune / Mumbai / Bangalore
+- **Site-plan heat** — towers sized by buyer interest; visit-today rings
+- Match intelligence: interested buyers + suggested inventory with match %
+- Live qualify conversation (greet → budget → book visit)
+- Today’s visits with reminder status and Lead Qualifier side panel
+- Light / dark theme for projector or daytime meetings
+
+---
+
+## How to open
 
 ```bash
-open /Users/vikasmaurya/Downloads/UseCases/RealEstate/index.html
+open RealEstate/index.html
 ```
 
 Or:
 
 ```bash
-cd /Users/vikasmaurya/Downloads/UseCases/RealEstate
+cd RealEstate
 python3 -m http.server 8080
+# → http://localhost:8080
 ```
 
-Needs network once for fonts + Unsplash project/unit photos.
+Requires network for fonts and Unsplash project / unit photos. No build step.
 
 ---
 
-## 90-second client pitch
+## Recommended walkthrough (≈90 seconds)
 
-### 0:00 — Hero (first impression)
-Full-bleed **project photography**, GenAIForge mark, **&lt;60s** speed chip, live voice badge, and one proof line (leads · qualified % · visits).
-
-### 0:15 — Switch city
-Use **Pune / Mumbai / Bangalore** tabs — hero photo, site plan, and matches update.
-
-### 0:25 — Site plan heat
-**Interest on site plan** shows tower zones sized by **how many buyers** want that unit type. Green ring = visit today. Click the hottest tower.
-
-### 0:40 — Match intelligence
-Always-visible strip:
-- **Interested buyers** (budget, intent, timeline, hot/warm)
-- **Suggested inventory** with **unit photos** + match % → **Assign visit**
-
-### 0:55 — Watch live qualify
-Click **Watch live qualify** (or scroll to the call strip). Hit **Advance conversation** through greet → budget → book visit. Proves the voice agent in &lt;30s.
-
-### 1:15 — Today’s visits
-Horizontal visit cards with reminder status. Click → Lead Qualifier **floating side bar** (keeps the site plan visible).
-
-### 1:25 — Theme
-Sun/moon toggle — **dark** for projector demos, **light** cool stone (no cream/terracotta). Saved as `gf-theme`.
+| Time | Focus | What to do |
+| --- | --- | --- |
+| 0:00 | **Hero** | Show project photo, &lt;60s speed chip, live voice badge, proof line. |
+| 0:15 | **City tabs** | Switch Pune / Mumbai / Bangalore — hero, site plan, and matches update. |
+| 0:25 | **Site-plan heat** | Click the hottest tower; explain interest-by-unit-type. |
+| 0:40 | **Match strip** | Walk interested buyers and suggested inventory → **Assign visit**. |
+| 0:55 | **Live qualify** | **Watch live qualify** → advance greet → budget → book visit. |
+| 1:15 | **Today’s visits** | Open a visit card → Lead Qualifier side bar. |
+| 1:25 | **Theme** | Toggle light/dark (`gf-theme`). |
 
 ---
 
-## Files
+## What’s included
 
 | File | Role |
-|------|------|
+| --- | --- |
 | `index.html` | Photo hero, site plan, match, live call, visits |
-| `assets/styles.css` | Luxury dark/light · Instrument Serif + Manrope |
-| `assets/data.js` | Projects, photos, site plans, clusters, inventory, live scripts |
-| `assets/app.js` | Rendering + interactions |
+| `assets/styles.css` | Luxury dark/light theme |
+| `assets/data.js` | Projects, photos, clusters, inventory, scripts |
+| `assets/app.js` | Rendering and interactions |
+
+---
+
+## Product line
+
+Maps to GenAIForge **Real Estate · Sales & Lead Qualification**.
 
 ---
 
@@ -63,4 +71,4 @@ Sun/moon toggle — **dark** for projector demos, **light** cool stone (no cream
 
 [genaiforge.in](https://genaiforge.in) · contactus@genaiforge.in
 
-*Demo data only.*
+*Demo data only — not a live CRM or telephony system.*

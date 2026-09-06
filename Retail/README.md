@@ -1,61 +1,69 @@
 # GenAIForge · Retail Conversational Commerce
 
-Client demo for **catalog-grounded shopping + support**: co-browse the merch wall, track orders visually, start returns, hand off to a stylist.
+Retail demo for **catalog-grounded shopping and support** — co-browse the merch wall, track orders visually, start returns, and hand off to a stylist with full chat context.
+
+**Who it is for:** Retail CX, e-commerce, and contact-center leaders evaluating conversational commerce that stays tied to real catalog and order data.
 
 ---
 
-## Open
+## What this demo shows
+
+- Editorial hero with 24/7 · conversion assist · tickets deflected proofs
+- Honest merch wall: Fashion / Home / Electronics with matching product photography
+- **Co-browse** — assistant filters the wall live while chat stays open
+- **WISMO** order tracking rail (Placed → Delivered)
+- Returns flow and VIP stylist handoff
+- Agent ops view: tickets deflected, conversion %, handoffs, intent mix
+- Light / dark theme
+
+---
+
+## How to open
 
 ```bash
-open /Users/vikasmaurya/Downloads/UseCases/Retail/index.html
+open Retail/index.html
 ```
 
 Or:
 
 ```bash
-cd Retail && python3 -m http.server 8080
+cd Retail
+python3 -m http.server 8080
+# → http://localhost:8080
 ```
 
-Needs network for fonts + Unsplash product photos.
+Requires network for fonts and Unsplash product photos. No build step.
 
 ---
 
-## 90-second client pitch
+## Recommended walkthrough (≈90 seconds)
 
-### 0:00 — Editorial hero
-Real lookbook / room / tech-desk photo. Proof line: **24/7 · conversion assist · tickets deflected**.
-
-### 0:10 — The catalog is honest
-Every card is a **matching product photo** (linen shirt, sofa, headphones — not random placeholders). Switch **Fashion / Home / Electronics**.
-
-### 0:25 — Co-browse
-**Ask assistant** (or the coral bubble). Try **“Show me something under ₹2,000”** — the wall **filters live** while the side chat stays open. Cards dim; matches stay highlighted.
-
-### 0:45 — WISMO
-**“Where is my order SF-284719?”** — tracking rail: Placed → Packed → In transit → Out for delivery → Delivered.
-
-Also: `SF-192847`, `NH-551023`, `NH-338901`, `TM-774512`, `TM-663401`.
-
-### 1:00 — Return + stylist
-**“Start a return”** → policy + label toast.  
-**“I need a stylist”** → VIP handoff with chat context.
-
-### 1:15 — Agent view
-Header toggle: tickets deflected, conversion %, handoffs, intent mix.
-
-### 1:25 — Theme
-Sun/moon · `gf-theme` · light stone default · dark merch wall · **no cream/terracotta**. Chat closes via **✕ / Esc / backdrop**.
+| Time | Focus | What to do |
+| --- | --- | --- |
+| 0:00 | **Hero** | Show lookbook / room photo and proof line. |
+| 0:10 | **Catalog** | Switch Fashion / Home / Electronics — every card is a matching product photo. |
+| 0:25 | **Co-browse** | Ask: *Show me something under ₹2,000* — wall filters live; matches stay highlighted. |
+| 0:45 | **WISMO** | Ask: *Where is my order SF-284719?* — walk the tracking rail. Also try `SF-192847`, `NH-551023`, `NH-338901`, `TM-774512`, `TM-663401`. |
+| 1:00 | **Return + stylist** | *Start a return* → policy + label toast. *I need a stylist* → VIP handoff with context. |
+| 1:15 | **Agent view** | Header toggle for deflection, conversion, handoffs, intent mix. |
+| 1:25 | **Theme / chat** | Toggle theme; close chat via ✕ / Esc / backdrop. |
 
 ---
 
-## Files
+## What’s included
 
 | File | Role |
-|------|------|
+| --- | --- |
 | `index.html` | Hero, merch wall, WISMO rail, side chat |
-| `assets/styles.css` | Fraunces + Plus Jakarta Sans · light/dark |
-| `assets/data.js` | Correct Unsplash SKUs, orders, ops |
+| `assets/styles.css` | Light/dark retail theme |
+| `assets/data.js` | Products, orders, ops metrics |
 | `assets/app.js` | Co-browse filter, WISMO, handoff |
+
+---
+
+## Product line
+
+Maps to GenAIForge **Retail · Conversational Commerce**.
 
 ---
 

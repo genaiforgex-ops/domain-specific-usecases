@@ -1,14 +1,29 @@
-# GenAIForge Insurance — Agentic Claims & FNOL
+# GenAIForge · Agentic Claims & FNOL
 
-**Client showcase demo** · HTML + CSS + JS mock · no backend
+Insurer demo for **agentic claims processing** — multi-channel FNOL intake, extract / validate / assess, then auto-settle or route to an adjuster with human-in-the-loop control.
 
-Agentic claims processing & FNOL for insurers — multi-channel intake, extract/validate/assess, auto-settle or route adjuster. **Days → Mins**, **70% less manual**, **24/7**.
+**Who it is for:** Claims leaders, FNOL / ops, and digital insurance teams evaluating AI that shortens cycle time without removing adjuster oversight.
 
 ---
 
-## Quick start
+## What this demo shows
 
-Open `index.html` in a browser (or serve locally):
+- Claim journey workspace (one claim at a time — not a metrics dashboard)
+- Stage rail: **Intake → Extract → Validate → Assess → Settle / Route**
+- Stage-aware paper documents, field extraction, and agent timeline
+- Lines of business: Motor, Health, Property
+- HITL bar: **Approve settle** or **Escalate to adjuster**
+- Outcomes narrative: days → minutes, less manual handling, 24/7 intake
+
+---
+
+## How to open
+
+```bash
+open Insurance/index.html
+```
+
+Or:
 
 ```bash
 cd Insurance
@@ -16,112 +31,65 @@ python3 -m http.server 8080
 # → http://localhost:8080
 ```
 
-No build step, no dependencies.
+No build step. No backend dependencies.
 
 ---
 
-## Layout — Claim Journey Workspace
-
-Unlike a traditional analytics dashboard, this demo uses a **claim journey workspace** focused on one claim at a time:
+## Workspace layout
 
 | Zone | Purpose |
-|------|---------|
-| **Stage rail** (top) | Horizontal pipeline: Intake → Extract → Validate → Assess → Settle/Route. Progress bar shows claim advancement. Click a stage to view stage-specific document content and filter the agent timeline. |
-| **Claim picker** (left) | Slim list of claims — ID, type, channel, severity, current stage. Click to load. |
-| **Paper pane** (centre-left) | Mock source documents styled as paper cards — content changes per stage (raw upload, OCR scan, policy match, damage assessment, settlement summary). |
-| **Extract pane** (centre-right) | Stage-specific fields — intake metadata, OCR confidence bars, coverage checks, fraud signals, settlement line items. |
-| **Agent timeline** (right) | Vertical multi-agent activity trail — not a chat drawer. Filters by selected stage. |
-| **HITL bar** (bottom) | Human-in-the-loop: **Approve settle** or **Escalate to adjuster**. |
-
-Selecting a claim shows a **stage-aware agent insight** banner at the top of the split view.
+| --- | --- |
+| **Stage rail** (top) | Pipeline progress; click a stage to filter documents and timeline |
+| **Claim picker** (left) | Claims list — ID, type, channel, severity, stage |
+| **Paper pane** | Mock source documents per stage |
+| **Extract pane** | Fields, confidence bars, coverage / fraud / settlement lines |
+| **Agent timeline** (right) | Multi-agent activity trail (not a chat drawer) |
+| **HITL bar** (bottom) | Approve settle or escalate |
 
 ---
 
-## Stage-specific document views
+## Recommended walkthrough
 
-Each pipeline stage shows distinct mock extraction content in the paper and fields panes:
+1. **Switch LOB** — Motor, Health, or Property.
+2. **Pick a claim** — paper, fields, timeline, and HITL update to that claim’s stage.
+3. **Click the stage rail** — explore stage-specific documents even beyond current progress.
+4. **Approve settle** or **Escalate** — toast + timeline update (in-memory only).
+5. **Toggle theme** — light/dark (`gf-theme`).
 
-| Stage | Paper pane | Extract pane |
-|-------|------------|--------------|
-| **Intake** | Raw upload bundle · channel transcript · queued attachments | Intake metadata — channel, attachments, OCR pending |
-| **Extract** | Source document with OCR scan overlay | Fields with animated confidence bars |
-| **Validate** | Policy doc with match highlights | Policy match & coverage check results |
-| **Assess** | Damage assessment summary | Estimate line items & fraud signal scan |
-| **Settle / Route** | Settlement summary or adjuster packet | Settlement amounts, routing, audit trail |
-
-Future stages (beyond the claim's current progress) are still explorable — the progress bar and claim list show actual pipeline position.
-
----
-
-## Interactions
-
-1. **Switch LOB** — Motor, Health, or Property claims load in the picker.
-2. **Pick a claim** — Paper documents, extracted fields, timeline, insight, and HITL bar update. Stage rail jumps to the claim's current stage.
-3. **Click stage rail** — Paper pane, extract pane, document tabs, insight banner, and timeline all update to that stage's content.
-4. **Switch document tabs** — Stage-specific tabs (e.g. Intake bundle / Channel, Policy match / Coverage checks).
-5. **Toggle theme** — Light/dark mode via header button. Preference stored in `localStorage` key `gf-theme`.
-6. **Approve settle** — Enabled when AI recommends auto-settle. Shows toast + updates timeline.
-7. **Escalate to adjuster** — Routes claim, updates timeline, disables buttons.
-
-All data is static mock — actions update in-memory state only.
-
----
-
-## Demo claims (Motor LOB)
+### Sample Motor claims
 
 | Claim | Type | Stage | AI recommendation |
-|-------|------|-------|-------------------|
+| --- | --- | --- | --- |
 | CLM-2024-88421 | Rear-end collision | Assess | Auto-settle ₹38,250 |
 | CLM-2024-88419 | Windshield crack | Settle | Already settled |
-| CLM-2024-88415 | Theft — vehicle | Validate | Escalate (fraud 78) |
-| CLM-2024-88412 | Side-swipe | Extract | Processing (OCR active) |
-| CLM-2024-88408 | Multi-vehicle pile-up | Assess | Routed to adjuster |
+| CLM-2024-88415 | Theft — vehicle | Validate | Escalate (fraud signal) |
+| CLM-2024-88412 | Side-swipe | Extract | OCR in progress |
+| CLM-2024-88408 | Multi-vehicle | Assess | Routed to adjuster |
 | CLM-2024-88405 | Hit & run | Validate | Escalate |
 
-Health and Property LOBs have 2 claims each.
+Health and Property each include additional sample claims.
 
 ---
 
-## Visual design
+## What’s included
 
-### Dark mode (default)
-- **Palette:** Slate `#0e141c` + teal `#2aa198` workspace
-- Teal progress bar on stage rail, confidence bars on extract pane
-
-### Light mode
-- **Palette:** Warm `#f4f0e8` workspace with emphasised paper documents
-- Paper cards use stronger shadows and `#fffdf8` stock
-- Toggle via header button · persisted as `gf-theme` in `localStorage`
-
-### Shared
-- **Fonts:** Libre Franklin (UI) + Newsreader (document titles on paper cards)
-- **Paper texture:** Warm cards with line rules, stage badges, and stamp overlays
-- **Extract stage:** Animated confidence bars when OCR is in progress
+| File | Role |
+| --- | --- |
+| `index.html` | Claim journey shell |
+| `assets/styles.css` | Light/dark, paper cards, stage rail |
+| `assets/data.js` | Claims, documents, timelines |
+| `assets/app.js` | Stage panes, theme, HITL actions |
 
 ---
 
-## Files
+## Product line
 
-```
-Insurance/
-├── index.html          # Claim journey workspace shell + theme bootstrap
-├── README.md           # This file
-└── assets/
-    ├── data.js         # Mock claims, documents, timelines, stage hints
-    ├── styles.css      # Light/dark themes, paper cards, stage rail, animations
-    └── app.js          # Stage-aware panes, theme toggle, HITL actions
-```
+Maps to GenAIForge **Insurance · Agentic Claims & FNOL**.
 
 ---
 
-## Product positioning
-
-**GenAIForge Insurance** demonstrates agentic claims orchestration:
-
-- **Multi-channel FNOL** — WhatsApp, Voice IVR, Portal, Email normalised in < 90 seconds
-- **Document intelligence** — Policy PDF, photos, FIR extracted with confidence scores per stage
-- **Multi-agent pipeline** — Intake → Extract → Validate → Assess → Settle/Route with full audit trail
-- **Human-in-the-loop** — AI recommends; adjuster approves settle or escalation
-- **Outcomes** — Days → minutes first response, 70% less manual handling, 24/7 intake
+## Contact
 
 [genaiforge.in](https://genaiforge.in) · contactus@genaiforge.in
+
+*Demo / illustrative data — not a live claims system.*

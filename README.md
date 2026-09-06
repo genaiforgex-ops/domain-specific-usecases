@@ -1,24 +1,27 @@
-# domain-specific-usecases
+# GenAIForge · Domain-specific use cases
 
-Static, client-ready **GenAIForge** demos by industry vertical. Each folder is a self-contained HTML/CSS/JS pitch surface — open in a browser, no backend required (Google Fonts only).
+Client-ready **static demos** for GenAIForge industry verticals. Each folder is a self-contained HTML/CSS/JS experience — open it in a browser, no backend or build step required.
 
-Built for buyer conversations: ROI, HITL governance, audit trails, trust chips, and Pilot vs Production packaging.
+Use these for buyer meetings, RFPs, and internal walkthroughs. Flagship modules emphasize **ROI**, **human-in-the-loop (HITL) governance**, **auditability**, and **Pilot vs Production** packaging.
+
+---
+
+## Prerequisites
+
+- A modern browser (Chrome, Edge, Safari, Firefox)
+- Network once for **Google Fonts** (and Unsplash / Chart.js where noted)
+- Optional: Python 3 if you prefer a local HTTP server instead of `file://`
 
 ---
 
 ## Quick start
 
+From the repository root:
+
 ```bash
-# Campaign / creative governance
 open Creatives/index.html
-
-# Third-party risk / vendor DD
 open VendorDueDiligence/index.html
-
-# Contract / LegalOS workflow
 open LegalWorkflow/index.html
-
-# Other verticals
 open Banking/index.html
 open Healthcare/index.html
 open Insurance/index.html
@@ -27,89 +30,84 @@ open RealEstate/index.html
 open Retail/index.html
 ```
 
-Or serve any folder locally:
+Or serve any folder:
 
 ```bash
-cd Banking && python3 -m http.server 8080
+cd Banking
+python3 -m http.server 8080
 # → http://localhost:8080
 ```
 
 ---
 
-## Demos
+## Demo catalog
 
-| Folder | Product surface | Accent | What buyers see |
+| Folder | Product | Audience | What you will see |
 | --- | --- | --- | --- |
-| **Creatives/** | Campaign Studio | Bronze `#B8956C` | Briefs → copy → design, brand guardrails, HITL approvals, ROI vs agency, **real 2025–26 marketing news pulse** |
-| **VendorDueDiligence/** | Vendor DD / TPRM | Teal `#3D8B7A` | Register → screen → decide → monitor, questionnaires, inherent/residual risk, examiner audit pack, procurement checklist |
-| **LegalWorkflow/** | LegalOS + **LegalBot** | Gold `#C4A035` | MSA automation, playbook-cited LegalBot, comparison, obligations, radar, trust center |
-| **Banking/** | BFSI Voice Command Center | — | Advisory & collections voice agent, DPD playbooks, RBI/SEBI rails, PTP / hardship |
-| **Healthcare/** | Healthcare vertical demo | — | Domain pitch surface for care / ops AI narratives |
-| **Insurance/** | Insurance vertical demo | — | Claims / underwriting oriented client demo |
-| **Manufacturing/** | Manufacturing vertical demo | — | Plant / ops AI use-case pitch |
-| **RealEstate/** | Real estate vertical demo | — | Property / CX oriented demo |
-| **Retail/** | Retail vertical demo | — | Commerce / retail AI pitch surface |
+| [**Creatives/**](Creatives/) | Campaign Studio | Marketing / brand / agencies | Brief → copy → design, brand guardrails, HITL approvals, ROI, real marketing news pulse |
+| [**VendorDueDiligence/**](VendorDueDiligence/) | Vendor DD / TPRM | Risk / procurement / compliance | Register → screen → decide → monitor, scoring, audit pack, procurement checklist |
+| [**LegalWorkflow/**](LegalWorkflow/) | LegalOS + LegalBot | Legal / CLM / GC office | MSA automation, playbook-cited LegalBot, obligations, trust center |
+| [**Banking/**](Banking/) | BFSI Voice Command Center | BFSI collections / advisory | Live call floor, DPD playbooks, customer 360, RBI/SEBI compliance rails |
+| [**Healthcare/**](Healthcare/) | Patient Access Command Center | Clinics / patient access | 24/7 booking, no-show risk, protocol intake, non-diagnostic assistant |
+| [**Insurance/**](Insurance/) | Agentic Claims & FNOL | Insurers / claims ops | Multi-stage claim journey, extract/validate/assess, HITL settle or escalate |
+| [**Manufacturing/**](Manufacturing/) | Predictive Maintenance | Plant ops / reliability | Plant schematic, OEE, risk-ranked assets, PM copilot with WO approval |
+| [**RealEstate/**](RealEstate/) | Sales Command Center | Developers / sales | Lead qualify, site-plan heat, unit match, visit booking |
+| [**Retail/**](Retail/) | Conversational Commerce | Retail / CX | Co-browse catalog, order tracking (WISMO), returns, stylist handoff |
 
-Flagship pitch paths for deep modules: **Creatives**, **VendorDueDiligence**, **LegalWorkflow** (each has `BUYER_NOTES.md` + a 2-minute README pitch).
-
----
-
-## How to pitch (flagship three)
-
-### Creatives — Campaign Studio
-1. Open Home → role switch → numbered tour  
-2. **ROI / Buy** — agency avoided, Pilot vs Production, trust  
-3. Guardrails → Briefs → Copies → Design → Approvals  
-4. Inbox / Performance — industry news with GenAIForge next actions  
-
-### VendorDueDiligence — TPRM
-1. Dashboard lifecycle rail → select **CloudNest**  
-2. Due Diligence run → Report → Monitoring alerts  
-3. Scoring (inherent/residual) → Controls → Audit pack ZIP  
-4. Procurement checklist + packages  
-
-### LegalWorkflow — LegalOS
-1. Dashboard hero + CLM research pulse  
-2. **LegalBot** — Review / Research / Draft with playbook § citations  
-3. MSA timeline + negotiation memory → Playbooks  
-4. Obligations + Trust center (SOC2/ISO demo-labeled, audit CSV)  
+**Deepest pitch modules:** Creatives, VendorDueDiligence, LegalWorkflow — each includes `BUYER_NOTES.md` with research themes and sources.
 
 ---
 
-## Shared demo conventions
+## Shared conventions
 
-- **Brand:** GenAIForge (no legacy vendor branding)
-- **Shell:** left nav, one panel at a time, sticky top bar, light/dark theme toggle
-- **Trust:** demo-labeled SOC2/ISO chips where shown; inference-only / no public training callouts on buyer surfaces
-- **HITL:** human gates on approvals, residual risk acceptance, and LegalBot counsel — not blind bulk AI
-- **Offline:** works from `file://` except Google Fonts
+| Convention | Detail |
+| --- | --- |
+| Brand | GenAIForge |
+| UI pattern | Sidebar (or journey workspace), one focus surface, theme toggle |
+| Trust | SOC2 / ISO chips are **demo-labeled** where shown; inference-only / no public training callouts on buyer surfaces |
+| HITL | Humans approve — creatives, residual risk, settlements, work orders, LegalBot counsel |
+| Data | Illustrative demo data unless a panel cites public industry sources |
 
 ---
 
-## Repo layout
+## Repository layout
 
 ```
 domain-specific-usecases/
-├── README.md                 ← you are here
-├── Creatives/                ← Campaign Studio (static)
-├── VendorDueDiligence/       ← Vendor DD / TPRM (static)
-├── LegalWorkflow/            ← LegalOS + LegalBot (static)
-├── Banking/ Healthcare/ Insurance/
-├── Manufacturing/ RealEstate/ Retail/
+├── README.md
+├── Creatives/              # Campaign Studio
+├── VendorDueDiligence/     # Third-party risk
+├── LegalWorkflow/          # LegalOS + LegalBot
+├── Banking/
+├── Healthcare/
+├── Insurance/
+├── Manufacturing/
+├── RealEstate/
+├── Retail/
 └── .gitignore
 ```
 
-Each demo folder typically includes:
+Typical demo folder contents:
 
-- `index.html` — shell + panels  
-- `assets/styles.css` · `assets/app.js` · `assets/data.js`  
-- `README.md` — open steps + pitch script  
-- `BUYER_NOTES.md` — research themes (flagship demos)
+| File | Purpose |
+| --- | --- |
+| `index.html` | Application shell |
+| `assets/styles.css` | Theme and layout |
+| `assets/data.js` | Demo datasets |
+| `assets/app.js` | Interactions |
+| `README.md` | How to open + pitch guide |
+| `BUYER_NOTES.md` | Research notes (flagship demos) |
+
+---
+
+## Contact
+
+- Website: [genaiforge.in](https://genaiforge.in)
+- Email: contactus@genaiforge.in
 
 ---
 
 ## Notes
 
-- Demo data is fictional unless a panel explicitly cites public industry sources (e.g. Creatives news pulse).  
-- Do not commit secrets; `.env` files are gitignored.  
-- Full-stack app trees previously used for local Docker (Marketing / Risk / Legal) were removed from this repo — client demos live in the static folders above.
+- Do not commit secrets; `.env` files are gitignored.
+- These demos are for presentation only — not production systems, live telephony, LMS, OMS, or medical devices.

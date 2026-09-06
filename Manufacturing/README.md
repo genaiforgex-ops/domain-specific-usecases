@@ -1,57 +1,75 @@
-# Manufacturing · Predictive Maintenance Showcase
+# GenAIForge · Predictive Maintenance Showcase
 
-Client-ready HTML demo for **GenAIForge** — plant floor schematic plus an AI predictive-maintenance copilot (as positioned in the GenAIForge industries deck).
+Plant-ops demo for **predictive maintenance** — interactive floor schematic, OEE and downtime trends, risk-ranked assets, and an AI PM copilot that drafts work orders for human approval.
 
-## Open the demo
+**Who it is for:** Plant managers, reliability engineers, and manufacturing digital leaders evaluating AI copilots on the shop floor.
 
-No build step. From this folder:
+---
+
+## What this demo shows
+
+- Interactive **plant floor schematic** (lines, cells, asset dots)
+- Multi-site plants: Pune / Chennai / Aurangabad
+- Compact KPIs: OEE, availability, critical alerts, predicted failures (7d)
+- Charts: OEE / downtime trend and sensor series for selected assets
+- Floating AI stack: alerts, insights, acknowledge, ask copilot
+- Full **PM Copilot** chat with draft work orders
+- HITL guardrail: **Approve WO** (recommendation only until human approves)
+
+---
+
+## How to open
 
 ```bash
-open index.html
+open Manufacturing/index.html
 ```
 
-Or serve locally:
+Or:
 
 ```bash
 cd Manufacturing
 python3 -m http.server 8080
-# then open http://localhost:8080
+# → http://localhost:8080
 ```
 
-Requires network once for Google Fonts and Chart.js CDN.
+Requires network once for Google Fonts and Chart.js CDN. No build step.
 
-## Theme
+---
 
-Default is **dark** (plant-ops console). Use the header toggle to switch to **light** mode — preference is saved in `localStorage` under `gf-theme`. Charts and the plant floor schematic update automatically.
+## Recommended walkthrough (≈2 minutes)
 
-## 2-minute walkthrough
+| Step | Focus | What to do |
+| --- | --- | --- |
+| 1 | **Plant schematic** | Click a line to filter assets; click asset dots to inspect sensors. |
+| 2 | **Plant switcher** | Switch Pune / Chennai / Aurangabad. |
+| 3 | **KPIs** | Call out OEE, availability, critical alerts, predicted failures. |
+| 4 | **Charts & assets** | Show risk-ranked assets and sensor trends. |
+| 5 | **Floating AI stack** | Acknowledge an alert or **Ask copilot** from a card. |
+| 6 | **PM Copilot** | Expand chat — try “Why is Line 3 degrading?” or “Draft a maintenance WO for A-301”. |
+| 7 | **Approve WO** | Emphasize human approval before work starts. |
+| 8 | **Theme** | Toggle light/dark (`gf-theme`). |
 
-1. **Plant floor schematic** (hero) — interactive SVG layout of lines/cells. Click a line to filter assets; click asset dots on the floor to inspect sensors.
-2. Switch **Plant** (Pune / Chennai / Aurangabad) to show multi-site layouts.
-3. **Compact KPIs** below the schematic — OEE, availability, critical alerts, predicted failures (7d).
-4. **Charts & assets** — OEE/downtime trend, risk-ranked assets, sensor trends when an asset is selected.
-5. **Floating AI stack** (bottom-right) — alert cards and AI insights. **Acknowledge** alerts or **Ask copilot** from a card.
-6. **Expand chat** on the stack to open the full PM Copilot — try “Why is Line 3 degrading?” or “Draft a maintenance WO for A-301”.
-7. **Approve WO** on a draft work order (human-in-the-loop guardrail).
+---
 
 ## What’s included
 
-| Area | Files |
-|------|--------|
-| Dashboard shell | `index.html` |
-| Styles | `assets/styles.css` |
-| Schematic, charts, floating copilot | `assets/app.js` |
-| Mock plant / sensor / copilot scripts | `assets/data.js` |
+| File | Role |
+| --- | --- |
+| `index.html` | Dashboard shell |
+| `assets/styles.css` | Plant-ops light/dark theme |
+| `assets/data.js` | Plants, sensors, copilot scripts |
+| `assets/app.js` | Schematic, charts, floating copilot |
 
-All data is illustrative demo data — not live IoT.
+---
 
-## PPT mapping
+## Product line
 
-- Predictive-maintenance copilots → floating recommendation stack + expand-to-chat + RUL / risk list  
-- Production observability → plant floor schematic, KPIs, OEE/downtime charts  
-- Guardrails → “recommendation only · human approve WO”
+Maps to GenAIForge **Manufacturing · Predictive Maintenance**.
+
+---
 
 ## Contact
 
-- [genaiforge.in](https://genaiforge.in)  
-- contactus@genaiforge.in
+[genaiforge.in](https://genaiforge.in) · contactus@genaiforge.in
+
+*Demo / illustrative data — not live IoT telemetry.*
