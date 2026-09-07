@@ -1,0 +1,453 @@
+/* ==========================================================================
+   GenAIForge · Premium layer
+   Loaded after each product stylesheet. White canvas, near-black gradient
+   surfaces, refined Inter typography. Only colour, type, border, radius and
+   shadow are touched — layout stays owned by each product.
+   ========================================================================== */
+
+:root,
+html,
+html.gf-theme-light,
+html.gf-theme-dark,
+[data-theme="light"],
+[data-theme="dark"],
+:root[data-theme="light"],
+:root[data-theme="dark"] {
+  --gf-font: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, -apple-system, sans-serif;
+  --gf-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Signature near-black gradients */
+  --gf-ink-grad: linear-gradient(135deg, #23262d 0%, #101318 45%, #000000 100%);
+  --gf-ink-grad-soft: linear-gradient(135deg, #2b2f37 0%, #14171c 55%, #05060a 100%);
+  --gf-ink-veil: linear-gradient(105deg, rgba(4, 5, 8, 0.92) 0%, rgba(4, 5, 8, 0.6) 48%, rgba(4, 5, 8, 0.25) 100%);
+
+  --gf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Light: white canvas ---------- */
+html.gf-theme-light,
+[data-theme="light"],
+:root[data-theme="light"],
+html:not(.gf-theme-dark):not([data-theme="dark"]) {
+  --gf-canvas: #ffffff;
+  --gf-surface: #ffffff;
+  --gf-raised: #fafaf9;
+  --gf-sunken: #f4f4f2;
+  --gf-ink: #0a0a0b;
+  --gf-muted: #5b5b58;
+  --gf-dim: #8d8d88;
+  --gf-line: rgba(10, 10, 11, 0.09);
+  --gf-line-strong: rgba(10, 10, 11, 0.18);
+  --gf-shadow-sm: 0 1px 2px rgba(10, 10, 11, 0.04);
+  --gf-shadow: 0 1px 1px rgba(10, 10, 11, 0.03), 0 12px 28px rgba(10, 10, 11, 0.06);
+  --gf-shadow-lg: 0 1px 1px rgba(10, 10, 11, 0.04), 0 32px 64px rgba(10, 10, 11, 0.1);
+  --gf-btn-ink: #ffffff;
+}
+
+/* ---------- Dark: black mix ---------- */
+html.gf-theme-dark,
+[data-theme="dark"],
+:root[data-theme="dark"] {
+  --gf-canvas: #050608;
+  --gf-surface: #0d0f13;
+  --gf-raised: #131519;
+  --gf-sunken: #1a1d22;
+  --gf-ink: #f7f7f6;
+  --gf-muted: #a0a09c;
+  --gf-dim: #6f6f6b;
+  --gf-line: rgba(255, 255, 255, 0.09);
+  --gf-line-strong: rgba(255, 255, 255, 0.2);
+  --gf-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --gf-shadow: 0 1px 1px rgba(0, 0, 0, 0.4), 0 16px 36px rgba(0, 0, 0, 0.5);
+  --gf-shadow-lg: 0 1px 1px rgba(0, 0, 0, 0.5), 0 40px 80px rgba(0, 0, 0, 0.6);
+  --gf-btn-ink: #05060a;
+}
+
+/* ==========================================================================
+   Map the shared palette onto each product's own token names
+   ========================================================================== */
+
+html.gf-theme-light,
+html.gf-theme-dark,
+[data-theme="light"],
+[data-theme="dark"],
+:root[data-theme="light"],
+:root[data-theme="dark"],
+html:not(.gf-theme-dark):not([data-theme="dark"]) {
+  /* Creatives · VDD · Legal · Banking · RealEstate · Retail · Healthcare */
+  --bg: var(--gf-canvas);
+  --bg-elev: var(--gf-surface);
+  --bg-panel: var(--gf-surface);
+  --bg-soft: var(--gf-sunken);
+  --sidebar: var(--gf-raised);
+  --border: var(--gf-line);
+  --border-strong: var(--gf-line-strong);
+  --text: var(--gf-ink);
+  --text-muted: var(--gf-muted);
+  --text-dim: var(--gf-dim);
+
+  --font-display: var(--gf-font);
+  --font-body: var(--gf-font);
+  --font-ui: var(--gf-font);
+  --font-doc: var(--gf-font);
+  --font-mono: var(--gf-mono);
+
+  --radius: 16px;
+  --ease: var(--gf-ease);
+
+  /* Manufacturing */
+  --bg-0: var(--gf-canvas);
+  --bg-1: var(--gf-surface);
+  --bg-2: var(--gf-raised);
+  --bg-3: var(--gf-sunken);
+  --grid-line: var(--gf-line);
+  --brand-mark-bg: var(--gf-ink-grad);
+  --panel-hero-bg: var(--gf-surface);
+  --panel-hero-shadow: var(--gf-shadow-sm);
+  --kpi-compact-bg: var(--gf-raised);
+  --stack-card-bg: var(--gf-surface);
+  --stack-card-shadow: var(--gf-shadow-lg);
+  --stack-empty-bg: var(--gf-raised);
+  --copilot-bg: var(--gf-surface);
+  --copilot-shadow: var(--gf-shadow-lg);
+  --toast-shadow: var(--gf-shadow-lg);
+  --body-gradient-end: var(--gf-canvas);
+  --body-glow-a: transparent;
+  --body-glow-b: transparent;
+
+  /* Shared */
+  --shadow: var(--gf-shadow);
+  --shadow-soft: var(--gf-shadow);
+  --topbar: color-mix(in srgb, var(--gf-canvas) 82%, transparent);
+  --topbar-bg: color-mix(in srgb, var(--gf-canvas) 82%, transparent);
+  --hero-veil: var(--gf-ink-veil);
+  --veil: var(--gf-ink-veil);
+  --hero-grad: var(--gf-ink-grad);
+}
+
+/* Insurance keeps a slate scale + paper metaphor */
+:root[data-theme="light"] {
+  --slate-950: var(--gf-canvas);
+  --slate-900: var(--gf-canvas);
+  --slate-800: var(--gf-raised);
+  --slate-700: var(--gf-sunken);
+  --slate-600: var(--gf-line-strong);
+  --slate-500: var(--gf-dim);
+  --slate-400: var(--gf-muted);
+  --slate-300: var(--gf-muted);
+  --slate-200: var(--gf-ink);
+  --slate-100: var(--gf-ink);
+  --paper: #ffffff;
+  --paper-stack-bg: var(--gf-raised);
+}
+
+:root[data-theme="dark"] {
+  --slate-950: #000000;
+  --slate-900: var(--gf-canvas);
+  --slate-800: var(--gf-surface);
+  --slate-700: var(--gf-raised);
+  --slate-600: var(--gf-line-strong);
+  --slate-500: var(--gf-dim);
+  --slate-400: var(--gf-muted);
+  --slate-300: var(--gf-muted);
+  --slate-200: var(--gf-ink);
+  --slate-100: var(--gf-ink);
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+body {
+  font-family: var(--gf-font);
+  color: var(--gf-ink);
+  background: var(--gf-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-feature-settings: "cv11" on, "ss01" on;
+  letter-spacing: -0.011em;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+.page-title,
+.hero-title,
+.card-head h2,
+.card-head h3,
+.brand-name {
+  font-family: var(--gf-font);
+  font-weight: 500;
+  letter-spacing: -0.028em;
+  line-height: 1.14;
+}
+
+.hero-title {
+  letter-spacing: -0.038em;
+}
+
+/* Numerals read as data, not decoration */
+.kpi strong,
+.proof strong,
+.score-num,
+.stat-pill strong,
+.clock,
+.nav-count,
+[class*="metric"] strong,
+[class*="kpi"] strong {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+
+.nav-label,
+.badge,
+.hero-eyebrow,
+.chrome-title,
+.field label,
+.data-table th,
+.drawer dt {
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+code,
+pre,
+.run-log,
+.mono {
+  font-family: var(--gf-mono);
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+
+.btn {
+  font-family: var(--gf-font);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border-radius: 999px;
+  border: 1px solid var(--gf-line);
+  background: transparent;
+  color: var(--gf-ink);
+  transition: background 0.2s var(--gf-ease), border-color 0.2s var(--gf-ease), color 0.2s var(--gf-ease);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--gf-sunken);
+  border-color: var(--gf-line-strong);
+}
+
+.btn-accent,
+.btn-primary {
+  background: var(--gf-ink-grad);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: var(--gf-shadow-sm);
+}
+
+.btn-accent:hover:not(:disabled),
+.btn-primary:hover:not(:disabled) {
+  background: var(--gf-ink-grad-soft);
+  border-color: transparent;
+  color: #ffffff;
+  filter: none;
+}
+
+html.gf-theme-dark .btn-accent,
+html.gf-theme-dark .btn-primary,
+[data-theme="dark"] .btn-accent,
+[data-theme="dark"] .btn-primary,
+:root[data-theme="dark"] .btn-primary {
+  background: var(--gf-ink);
+  color: #05060a;
+}
+
+html.gf-theme-dark .btn-accent:hover:not(:disabled),
+[data-theme="dark"] .btn-accent:hover:not(:disabled) {
+  background: #ffffff;
+  color: #05060a;
+}
+
+/* Buttons sitting on an ink hero invert to white */
+.hero-content .btn-accent,
+.hero-actions .btn-accent {
+  background: #ffffff;
+  color: #0a0a0b;
+}
+
+.hero-content .btn-accent:hover,
+.hero-actions .btn-accent:hover {
+  background: #f0f0ee;
+  color: #0a0a0b;
+}
+
+.hero-content .btn:not(.btn-accent),
+.hero-actions .btn:not(.btn-accent) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
+.hero-content .btn:not(.btn-accent):hover,
+.hero-actions .btn:not(.btn-accent):hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+}
+
+.badge,
+.badge-demo {
+  border-radius: 999px;
+  border: 1px solid var(--gf-line);
+  background: transparent;
+  color: var(--gf-muted);
+  font-size: 0.62rem;
+}
+
+.card,
+.panel,
+.kpi,
+.paper-card,
+.product-card {
+  border-radius: var(--radius);
+  border-color: var(--gf-line);
+}
+
+.card,
+.panel {
+  background: var(--gf-surface);
+  box-shadow: var(--gf-shadow-sm);
+}
+
+.topbar,
+.header {
+  backdrop-filter: blur(20px) saturate(1.15);
+  border-bottom: 1px solid var(--gf-line);
+}
+
+.sidebar {
+  background: var(--gf-raised);
+  color: var(--gf-ink);
+  border-right: 1px solid var(--gf-line);
+}
+
+.nav-item {
+  color: var(--gf-muted);
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+.nav-item:hover {
+  background: var(--gf-sunken);
+  color: var(--gf-ink);
+}
+
+/* Active nav is the sidebar's ink moment */
+.nav-item.active {
+  background: var(--gf-ink-grad);
+  color: #ffffff;
+  box-shadow: var(--gf-shadow-sm);
+}
+
+.nav-count {
+  background: var(--gf-sunken);
+  color: inherit;
+  font-weight: 500;
+}
+
+.nav-item.active .nav-count {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+html.gf-theme-dark .nav-item.active,
+[data-theme="dark"] .nav-item.active {
+  background: var(--gf-ink);
+  color: #05060a;
+}
+
+html.gf-theme-dark .nav-item.active .nav-count,
+[data-theme="dark"] .nav-item.active .nav-count {
+  background: rgba(5, 6, 10, 0.14);
+  color: #05060a;
+}
+
+/* background-color, never the shorthand — selects carry a chevron background-image */
+select,
+input,
+textarea {
+  font-family: var(--gf-font);
+  border-radius: 10px;
+  border: 1px solid var(--gf-line);
+  background-color: var(--gf-surface);
+  color: var(--gf-ink);
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--gf-line-strong);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gf-ink) 8%, transparent);
+}
+
+.data-table th {
+  color: var(--gf-dim);
+}
+
+.data-table td,
+.data-table th {
+  border-bottom-color: var(--gf-line);
+}
+
+/* Brand mark reads as an ink chip */
+.brand-mark {
+  background: var(--gf-ink-grad);
+  color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  box-shadow: var(--gf-shadow-sm);
+}
+
+.brand-mark svg,
+.brand-mark svg * {
+  color: #ffffff;
+  stroke: currentColor;
+}
+
+html.gf-theme-dark .brand-mark,
+[data-theme="dark"] .brand-mark {
+  background: var(--gf-ink);
+}
+
+html.gf-theme-dark .brand-mark svg,
+html.gf-theme-dark .brand-mark svg *,
+[data-theme="dark"] .brand-mark svg,
+[data-theme="dark"] .brand-mark svg * {
+  color: #05060a;
+}
+
+.brand-name span {
+  font-style: italic;
+  opacity: 0.88;
+}
+
+/* Calm the demo-era motion */
+.live-dot,
+.badge-demo::before,
+.steps li.active .dot {
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

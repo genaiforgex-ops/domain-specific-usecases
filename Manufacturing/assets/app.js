@@ -72,7 +72,7 @@
 
   function initTheme() {
     const stored = localStorage.getItem(THEME_KEY);
-    const theme = stored === "light" ? "light" : "dark";
+    const theme = stored === "dark" ? "dark" : "light";
     state.theme = theme;
     document.documentElement.setAttribute("data-theme", theme);
     updateThemeToggleUi();
