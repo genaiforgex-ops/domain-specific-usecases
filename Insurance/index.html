@@ -8,23 +8,21 @@
       name="description"
       content="Agentic claims processing & FNOL — multi-channel intake, extract/validate/assess, auto-settle or route adjuster. Days→Mins, 70% less manual, 24/7."
     />
-    <meta name="theme-color" content="#0e141c" />
+    <meta name="theme-color" content="#f4f0e8" />
     <script>
       (function () {
         var t = localStorage.getItem("gf-theme");
-        if (t !== "light" && t !== "dark") {
-          t = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-        }
+        if (t !== "light" && t !== "dark") t = "light";
         document.documentElement.setAttribute("data-theme", t);
-        if (t === "light") {
-          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#f4f0e8");
+        if (t === "dark") {
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0e141c");
         }
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/styles.css" />
@@ -48,7 +46,7 @@
             </svg>
           </div>
           <div class="brand-text">
-            <span class="brand-name">GenAIForge</span>
+            <span class="brand-name">Genai<span>Forge</span></span>
             <span class="brand-product">Insurance · Agentic Claims &amp; FNOL</span>
           </div>
         </a>
@@ -93,7 +91,7 @@
               </svg>
             </span>
           </button>
-          <span class="badge badge-demo">Demo</span>
+          <span class="badge badge-demo">Presentation</span>
           <time class="clock" id="clock" datetime=""></time>
         </div>
       </header>

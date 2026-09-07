@@ -47,8 +47,8 @@
   --floor-label: #8fa3b5;
   --floor-title: #e8f0f6;
   --btn-accent-text: #041210;
-  --font-display: "Syne", system-ui, sans-serif;
-  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-display: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
+  --font-body: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --radius: 10px;
   --header-h: 58px;
@@ -57,12 +57,12 @@
 }
 
 [data-theme="light"] {
-  --bg-0: #f4f7fa;
+  --bg-0: #f6f5f2;
   --bg-1: #ffffff;
-  --bg-2: #eef2f6;
-  --bg-3: #e2e8ef;
-  --border: rgba(60, 80, 100, 0.14);
-  --border-strong: rgba(60, 80, 100, 0.26);
+  --bg-2: #eeede8;
+  --bg-3: #e6e4de;
+  --border: rgba(26, 40, 54, 0.1);
+  --border-strong: rgba(26, 40, 54, 0.18);
   --text: #1a2836;
   --text-muted: #4a6278;
   --text-dim: #6b8296;
@@ -76,8 +76,8 @@
   --danger-dim: rgba(208, 68, 68, 0.1);
   --ok: #2a9d5c;
   --ok-dim: rgba(42, 157, 92, 0.12);
-  --topbar-bg: rgba(255, 255, 255, 0.92);
-  --body-gradient-end: #e8eef4;
+  --topbar-bg: rgba(246, 245, 242, 0.9);
+  --body-gradient-end: #eeede8;
   --body-glow-a: rgba(26, 158, 146, 0.06);
   --body-glow-b: rgba(61, 122, 158, 0.05);
   --grid-line: rgba(60, 80, 100, 0.06);
@@ -202,7 +202,7 @@ body::before {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  box-shadow: 0 0 20px var(--accent-glow);
+  box-shadow: none;
 }
 
 .brand-mark svg {
@@ -219,9 +219,14 @@ body::before {
 
 .brand-name {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 500;
+  font-size: 1.05rem;
   letter-spacing: -0.02em;
+}
+
+.brand-name span {
+  font-style: italic;
+  opacity: 0.9;
 }
 
 .brand-product {
@@ -298,13 +303,7 @@ select:focus {
 }
 
 .badge-demo::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--warn);
-  box-shadow: 0 0 8px var(--warn);
-  animation: pulse-dot 1.8s ease-in-out infinite;
+  content: none;
 }
 
 .clock {
@@ -416,8 +415,8 @@ select:focus {
   font-family: inherit;
   font-size: 0.8rem;
   font-weight: 500;
-  padding: 0.45rem 0.85rem;
-  border-radius: 7px;
+  padding: 0.48rem 0.95rem;
+  border-radius: 999px;
   cursor: pointer;
   transition: background 0.2s var(--ease), border-color 0.2s, transform 0.15s;
 }
@@ -432,20 +431,22 @@ select:focus {
 }
 
 .btn-accent {
-  background: linear-gradient(180deg, #35d4c5, #249e93);
+  background: var(--text);
   border-color: transparent;
-  color: var(--btn-accent-text);
-  font-weight: 600;
-  box-shadow: 0 4px 16px var(--accent-glow);
+  color: var(--bg-0);
+  font-weight: 500;
+  box-shadow: none;
 }
 
 [data-theme="light"] .btn-accent {
-  background: linear-gradient(180deg, #22b5a8, #1a9e92);
+  background: var(--text);
+  color: var(--bg-0);
 }
 
 .btn-accent:hover {
-  background: linear-gradient(180deg, #4ae0d1, #2ec4b6);
+  background: var(--accent);
   border-color: transparent;
+  color: #041210;
 }
 
 .btn-ghost {

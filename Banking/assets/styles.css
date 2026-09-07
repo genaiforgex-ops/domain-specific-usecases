@@ -18,8 +18,8 @@ html.gf-theme-dark {
   --danger: #f04438;
   --danger-dim: rgba(240, 68, 56, 0.14);
   --info: #5b9fd4;
-  --font-display: "Sora", system-ui, sans-serif;
-  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-display: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
+  --font-body: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
   --radius: 14px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --hero-grad: radial-gradient(ellipse 80% 60% at 20% -10%, rgba(18, 183, 106, 0.18), transparent 55%),
@@ -29,26 +29,26 @@ html.gf-theme-dark {
 }
 
 html.gf-theme-light {
-  --bg: #f5f7fa;
+  --bg: #f6f5f2;
   --bg-elev: #ffffff;
   --bg-panel: #ffffff;
-  --bg-soft: #eef1f6;
-  --border: rgba(15, 23, 42, 0.1);
-  --border-strong: rgba(15, 140, 80, 0.35);
+  --bg-soft: #eeede8;
+  --border: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 140, 80, 0.32);
   --text: #0f172a;
   --text-muted: #5b6577;
   --text-dim: #8a93a3;
   --accent: #0d9f5c;
   --accent-dim: rgba(13, 159, 92, 0.12);
-  --accent-glow: rgba(13, 159, 92, 0.25);
+  --accent-glow: rgba(13, 159, 92, 0.18);
   --gold: #a67c00;
   --gold-dim: rgba(166, 124, 0, 0.12);
   --danger: #d92d20;
   --danger-dim: rgba(217, 45, 32, 0.1);
   --info: #2b7bb9;
-  --hero-grad: radial-gradient(ellipse 70% 50% at 15% -5%, rgba(13, 159, 92, 0.1), transparent 50%),
-    linear-gradient(180deg, #eef2f6 0%, var(--bg) 100%);
-  --topbar: rgba(245, 247, 250, 0.92);
+  --hero-grad: radial-gradient(ellipse 70% 50% at 15% -5%, rgba(13, 159, 92, 0.08), transparent 50%),
+    linear-gradient(180deg, #f3f2ee 0%, var(--bg) 100%);
+  --topbar: rgba(246, 245, 242, 0.86);
 }
 
 *,
@@ -69,6 +69,8 @@ body {
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
 }
 
 #app {
@@ -84,9 +86,9 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.7rem 1.35rem;
+  padding: 0.85rem 1.5rem;
   background: var(--topbar);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(18px) saturate(1.1);
   border-bottom: 1px solid var(--border);
 }
 
@@ -116,9 +118,14 @@ body {
 
 .brand-name {
   font-family: var(--font-display);
-  font-weight: 650;
-  font-size: 0.95rem;
+  font-weight: 500;
+  font-size: 1.05rem;
   letter-spacing: -0.02em;
+}
+
+.brand-name span {
+  font-style: italic;
+  opacity: 0.9;
 }
 
 .brand-product {
@@ -166,13 +173,13 @@ select {
 .btn {
   appearance: none;
   border: 1px solid var(--border);
-  background: var(--bg-soft);
+  background: transparent;
   color: var(--text);
   font-family: inherit;
   font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.45rem 0.85rem;
-  border-radius: 8px;
+  font-weight: 500;
+  padding: 0.48rem 0.95rem;
+  border-radius: 999px;
   cursor: pointer;
   transition: 0.2s var(--ease);
 }
@@ -187,10 +194,14 @@ select {
 }
 
 .btn-accent {
-  background: linear-gradient(180deg, #1fd180, var(--accent));
+  background: var(--text);
   border-color: transparent;
-  color: #04140c;
-  box-shadow: 0 4px 18px var(--accent-glow);
+  color: var(--bg);
+}
+
+.btn-accent:hover:not(:disabled) {
+  background: var(--accent);
+  color: #fff;
 }
 
 .btn-lg {
@@ -209,9 +220,10 @@ select {
 
 .badge {
   font-size: 0.62rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.28rem 0.5rem;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 0.55rem;
   border-radius: 999px;
   border: 1px solid var(--border);
   color: var(--text-muted);

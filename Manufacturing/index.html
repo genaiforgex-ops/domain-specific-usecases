@@ -8,11 +8,11 @@
       name="description"
       content="Client showcase: plant analytics + AI predictive-maintenance copilot by GenAIForge."
     />
-    <meta name="theme-color" content="#070a0e" id="themeColorMeta" />
+    <meta name="theme-color" content="#f4f7fa" id="themeColorMeta" />
     <script>
       (function () {
         var t = localStorage.getItem("gf-theme");
-        if (t !== "light" && t !== "dark") t = "dark";
+        if (t !== "light" && t !== "dark") t = "light";
         document.documentElement.setAttribute("data-theme", t);
         var m = document.getElementById("themeColorMeta");
         if (m) m.setAttribute("content", t === "light" ? "#f4f7fa" : "#070a0e");
@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Syne:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/styles.css" />
@@ -45,7 +45,7 @@
             </svg>
           </div>
           <div class="brand-text">
-            <span class="brand-name">GenAIForge</span>
+            <span class="brand-name">Genai<span>Forge</span></span>
             <span class="brand-product">Manufacturing · Predictive Maintenance</span>
           </div>
         </a>
@@ -76,7 +76,7 @@
             <label for="plantSelect">Plant</label>
             <select id="plantSelect" aria-label="Select plant"></select>
           </div>
-          <span class="badge badge-demo">Demo data</span>
+          <span class="badge badge-demo">Presentation</span>
           <time class="clock" id="clock" datetime=""></time>
         </div>
       </header>

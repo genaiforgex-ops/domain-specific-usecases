@@ -9,7 +9,7 @@
     selectedAssetId: null,
     selectedLineId: null,
     copilotOpen: false,
-    theme: "dark",
+    theme: "light",
     oeeChart: null,
     sensorChart: null,
     alertAck: {},
@@ -230,8 +230,8 @@
             })
             .join("")}
           <text class="zone-id" x="${z.x + 12}" y="${z.y + 22}" fill="${p.floorLabel}" font-size="11" font-family="IBM Plex Mono, monospace">${line.id}</text>
-          <text class="zone-name" x="${z.x + 12}" y="${z.y + 40}" fill="${p.floorTitle}" font-size="13" font-weight="600" font-family="IBM Plex Sans, sans-serif">${line.name}</text>
-          <text class="zone-oee" x="${z.x + z.w - 12}" y="${z.y + 40}" fill="${p.accent}" font-size="14" font-weight="700" font-family="Syne, sans-serif" text-anchor="end">${line.oee}%</text>
+          <text class="zone-name" x="${z.x + 12}" y="${z.y + 40}" fill="${p.floorTitle}" font-size="13" font-weight="600" font-family="Inter, system-ui, sans-serif">${line.name}</text>
+          <text class="zone-oee" x="${z.x + z.w - 12}" y="${z.y + 40}" fill="${p.accent}" font-size="14" font-weight="700" font-family="Inter, system-ui, sans-serif" text-anchor="end">${line.oee}%</text>
           ${assetDots}
         </g>`;
       })
@@ -383,7 +383,7 @@
     const p = themePalette();
     Chart.defaults.color = p.chartText;
     Chart.defaults.borderColor = p.chartGrid;
-    Chart.defaults.font.family = "'IBM Plex Sans', system-ui, sans-serif";
+    Chart.defaults.font.family = "Inter, system-ui, sans-serif";
   }
 
   function chartColors() {

@@ -28,17 +28,17 @@
   --red: #e05555;
   --green: #3dba8c;
 
-  --font-ui: "Libre Franklin", system-ui, sans-serif;
-  --font-doc: "Newsreader", Georgia, serif;
+  --font-ui: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
+  --font-doc: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
 
-  --header-h: 52px;
+  --header-h: 56px;
   --rail-h: 64px;
   --hitl-h: 64px;
   --picker-w: 220px;
   --timeline-w: 260px;
 
-  --radius: 6px;
-  --radius-lg: 10px;
+  --radius: 10px;
+  --radius-lg: 14px;
 }
 
 :root[data-theme="light"] {
@@ -90,6 +90,8 @@ body {
   color: var(--slate-200);
   background: var(--slate-900);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
 }
 
 #app {
@@ -136,9 +138,15 @@ body {
 }
 
 .brand-name {
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
   color: var(--slate-100);
+}
+
+.brand-name span {
+  font-style: italic;
+  opacity: 0.9;
 }
 
 .brand-product {
@@ -205,11 +213,11 @@ body {
 
 .badge {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 3px 8px;
-  border-radius: 4px;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 999px;
 }
 
 .badge-demo {
@@ -1134,12 +1142,13 @@ body {
 }
 
 .btn-primary {
-  background: var(--teal);
+  background: var(--slate-100);
   color: var(--slate-950);
 }
 
 .btn-primary:hover {
-  background: #33b8ae;
+  background: var(--teal);
+  color: var(--slate-950);
 }
 
 .btn-primary:disabled {

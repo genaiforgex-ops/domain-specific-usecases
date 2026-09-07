@@ -18,8 +18,8 @@ html.gf-theme-dark {
   --warn: #e0b35a;
   --hot: #e87461;
   --hot-dim: rgba(232, 116, 97, 0.18);
-  --font-display: "Instrument Serif", Georgia, serif;
-  --font-body: "Manrope", system-ui, sans-serif;
+  --font-display: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
+  --font-body: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
   --radius: 14px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --hero-veil: linear-gradient(105deg, rgba(10, 12, 16, 0.92) 0%, rgba(10, 12, 16, 0.55) 48%, rgba(10, 12, 16, 0.25) 100%);
@@ -36,18 +36,18 @@ html.gf-theme-dark {
 }
 
 html.gf-theme-light {
-  --bg: #f7f8fa;
+  --bg: #f6f5f2;
   --bg-elev: #ffffff;
   --bg-panel: #ffffff;
-  --bg-soft: #eef0f4;
-  --border: rgba(18, 20, 26, 0.1);
-  --border-strong: rgba(160, 120, 55, 0.4);
+  --bg-soft: #eeede8;
+  --border: rgba(18, 20, 26, 0.08);
+  --border-strong: rgba(160, 120, 55, 0.35);
   --text: #12141a;
   --text-muted: #5a6170;
   --text-dim: #8a919e;
   --gold: #9a7a3c;
   --gold-soft: rgba(154, 122, 60, 0.12);
-  --gold-glow: rgba(154, 122, 60, 0.28);
+  --gold-glow: rgba(154, 122, 60, 0.2);
   --ok: #1f9a72;
   --ok-dim: rgba(31, 154, 114, 0.12);
   --warn: #b8860b;
@@ -61,7 +61,7 @@ html.gf-theme-light {
   --heat-low: rgba(154, 122, 60, 0.4);
   --heat-mid: rgba(154, 122, 60, 0.58);
   --heat-high: rgba(140, 100, 40, 0.78);
-  --topbar-bg: rgba(247, 248, 250, 0.9);
+  --topbar-bg: rgba(246, 245, 242, 0.88);
   --chip-bg: rgba(18, 20, 26, 0.55);
   --ghost-light: rgba(255, 255, 255, 0.2);
 }
@@ -133,9 +133,15 @@ body {
 
 .brand-name {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-weight: 500;
+  font-size: 1.05rem;
   letter-spacing: -0.02em;
   line-height: 1.1;
+}
+
+.brand-name span {
+  font-style: italic;
+  opacity: 0.9;
 }
 
 .brand-product {
@@ -189,30 +195,32 @@ body {
 .btn {
   appearance: none;
   border: 1px solid var(--border);
-  background: var(--bg-soft);
+  background: transparent;
   color: var(--text);
   font-family: inherit;
   font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.45rem 0.9rem;
-  border-radius: 8px;
+  font-weight: 500;
+  padding: 0.48rem 0.95rem;
+  border-radius: 999px;
   cursor: pointer;
   transition: 0.2s var(--ease);
 }
 
 .btn:hover {
+  background: var(--bg-soft);
   border-color: var(--border-strong);
 }
 
 .btn-accent {
-  background: linear-gradient(180deg, #d4b67a, var(--gold));
+  background: var(--text);
   border-color: transparent;
-  color: #1a1408;
-  box-shadow: 0 4px 18px var(--gold-glow);
+  color: var(--bg);
 }
 
 .btn-accent:hover {
-  filter: brightness(1.05);
+  background: var(--gold);
+  color: #1a1408;
+  filter: none;
 }
 
 .btn-lg {
@@ -295,6 +303,12 @@ html.gf-theme-light .theme-icon-moon {
   padding: 3rem 1.75rem 2.5rem;
   max-width: 720px;
   color: #fff;
+}
+
+.hero-content .btn-accent {
+  background: #fff;
+  color: #12141a;
+  border-color: transparent;
 }
 
 .hero-chips {

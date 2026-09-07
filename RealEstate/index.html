@@ -8,18 +8,18 @@
       name="description"
       content="Client-winning demo: &lt;60s lead response, 24/7 qualify, right buyer to right unit — GenAIForge."
     />
-    <meta name="theme-color" content="#0a0c10" id="themeColorMeta" />
+    <meta name="theme-color" content="#f7f8fa" id="themeColorMeta" />
     <script>
       (function () {
         var t = localStorage.getItem("gf-theme");
-        if (t === "light") document.documentElement.classList.add("gf-theme-light");
-        else document.documentElement.classList.add("gf-theme-dark");
+        if (t === "dark") document.documentElement.classList.add("gf-theme-dark");
+        else document.documentElement.classList.add("gf-theme-light");
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/styles.css" />
@@ -41,7 +41,7 @@
             </svg>
           </div>
           <div class="brand-text">
-            <span class="brand-name">GenAIForge</span>
+            <span class="brand-name">Genai<span>Forge</span></span>
             <span class="brand-product">Real Estate · Sales Command</span>
           </div>
         </a>
@@ -52,10 +52,10 @@
 
         <div class="topbar-controls">
           <button type="button" id="themeToggle" class="btn btn-ghost theme-toggle" aria-label="Toggle theme">
-            <span class="theme-icon-sun" aria-hidden="true">☀</span>
-            <span class="theme-icon-moon" aria-hidden="true">☾</span>
+            <span class="theme-icon-sun" aria-hidden="true">Light</span>
+            <span class="theme-icon-moon" aria-hidden="true">Dark</span>
           </button>
-          <span class="badge badge-demo">Demo data</span>
+          <span class="badge badge-demo">Presentation</span>
           <button type="button" class="btn btn-accent" id="qualifierToggle">Lead Qualifier</button>
         </div>
       </header>

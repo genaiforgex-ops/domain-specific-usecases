@@ -11,7 +11,7 @@
     claimId: null,
     stage: "assess",
     docTab: "bundle",
-    theme: "dark",
+    theme: "light",
   };
 
   /* ── DOM refs ── */

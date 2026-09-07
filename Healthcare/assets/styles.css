@@ -1,15 +1,15 @@
 /* GenAIForge Healthcare — Patient Access Command Center */
 
 :root {
-  --font-display: "Source Serif 4", Georgia, serif;
-  --font-ui: "Nunito Sans", system-ui, sans-serif;
-  --bg: #f5f8fb;
+  --font-display: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
+  --font-ui: "GT Walsheim Medium", "GT Walsheim Medium Placeholder", Inter, system-ui, sans-serif;
+  --bg: #f6f5f2;
   --bg-elev: #ffffff;
-  --bg-soft: #e8eef4;
+  --bg-soft: #eeede8;
   --text: #15202b;
   --text-muted: #5a6b7a;
-  --border: #d4dde6;
-  --border-strong: #b0bec9;
+  --border: rgba(21, 32, 43, 0.1);
+  --border-strong: rgba(21, 32, 43, 0.18);
   --accent: #2a9d8f;
   --accent-dim: rgba(42, 157, 143, 0.14);
   --accent-ink: #1d6f66;
@@ -17,7 +17,7 @@
   --risk-mid: #c9852a;
   --risk-high: #c44b4b;
   --veil: linear-gradient(105deg, rgba(15, 28, 36, 0.82) 0%, rgba(15, 28, 36, 0.45) 55%, rgba(15, 28, 36, 0.25) 100%);
-  --shadow: 0 12px 40px rgba(21, 32, 43, 0.12);
+  --shadow: 0 1px 0 rgba(21, 32, 43, 0.04), 0 18px 40px rgba(21, 32, 43, 0.07);
 }
 
 html.gf-theme-dark {
@@ -50,6 +50,9 @@ body {
   font-family: var(--font-ui);
   background: var(--bg);
   color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
   min-height: 100vh;
   line-height: 1.45;
 }
@@ -69,9 +72,10 @@ a {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.7rem 1.25rem;
+  padding: 0.85rem 1.5rem;
   border-bottom: 1px solid var(--border);
-  background: var(--bg-elev);
+  background: color-mix(in srgb, var(--bg-elev) 88%, transparent);
+  backdrop-filter: blur(16px);
   position: sticky;
   top: 0;
   z-index: 40;
@@ -109,8 +113,14 @@ a {
 
 .brand-name {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-name span {
+  font-style: italic;
+  opacity: 0.9;
 }
 
 .brand-product {
@@ -156,12 +166,14 @@ a {
 }
 
 .badge {
-  font-size: 0.65rem;
-  font-weight: 600;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   padding: 0.3rem 0.55rem;
-  border-radius: 6px;
+  border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(--bg-soft);
+  background: transparent;
   color: var(--text-muted);
   white-space: nowrap;
 }
@@ -175,13 +187,13 @@ a {
 .btn {
   appearance: none;
   border: 1px solid var(--border);
-  background: var(--bg-soft);
+  background: transparent;
   color: var(--text);
   font-family: inherit;
   font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.4rem 0.75rem;
-  border-radius: 8px;
+  font-weight: 500;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
   cursor: pointer;
 }
 
@@ -206,9 +218,9 @@ a {
 }
 
 .btn-accent {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+  background: var(--text);
+  border-color: transparent;
+  color: var(--bg);
 }
 
 .theme-toggle .theme-icon-moon {
@@ -256,6 +268,12 @@ html.gf-theme-dark .theme-toggle .theme-icon-moon {
   animation: rise 0.7s ease-out 0.15s both;
 }
 
+.hero-content .btn-accent {
+  background: #fff;
+  color: #15202b;
+  border-color: transparent;
+}
+
 .hero-site {
   margin: 0 0 0.35rem;
   font-size: 0.8rem;
@@ -268,8 +286,9 @@ html.gf-theme-dark .theme-toggle .theme-icon-moon {
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.85rem, 4vw, 2.75rem);
-  font-weight: 600;
-  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .hero-sub {

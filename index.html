@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · Industry command centers</title>
+    <meta
+      name="description"
+      content="Nine production-ready GenAIForge industry workspaces — click any to enter."
+    />
+    <meta name="theme-color" content="#f6f5f2" id="themeColorMeta" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        if (t === "dark") document.documentElement.classList.add("gf-theme-dark");
+        else document.documentElement.classList.add("gf-theme-light");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/hub.css" />
+    <script src="assets/hub.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="grid-veil" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <span class="brand-name">Genai<span>Forge</span></span>
+        </a>
+        <span class="brand-rule" aria-hidden="true"></span>
+        <span class="brand-product">Industry demos</span>
+        <div class="topbar-spacer"></div>
+        <div class="topbar-controls">
+          <button type="button" id="themeToggle" class="btn btn-ghost" aria-label="Toggle theme">
+            <span class="theme-sun">Light</span><span class="theme-moon">Dark</span>
+          </button>
+          <span class="badge">Presentation</span>
+        </div>
+      </header>
+
+      <div class="file-banner" id="fileBanner" hidden>
+        Live previews need a local server. From this folder run
+        <code>python3 -m http.server 8080</code>
+        then open <code>http://localhost:8080</code>.
+      </div>
+
+      <section class="hero">
+        <p class="hero-eyebrow"><span id="demoCount">9</span> governed workspaces</p>
+        <h1 class="hero-title">Custom AI agents for real business workflows</h1>
+        <p class="hero-sub">
+          Production-ready command centers — secure, auditable, human-in-the-loop.
+          Click a workspace to enter.
+        </p>
+        <ul class="hero-proof" aria-label="Trust signals">
+          <li>Human-in-the-loop</li>
+          <li>Audit-ready</li>
+          <li>On your infrastructure</li>
+        </ul>
+      </section>
+
+      <section class="grid" id="usecaseGrid" aria-label="Use cases"></section>
+
+      <footer class="site-foot">
+        <span>Presentation demos · not production systems</span>
+        <a href="https://genaiforge.in" target="_blank" rel="noopener">genaiforge.in</a>
+      </footer>
+    </div>
+
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="stage-bar">
+        <button type="button" class="btn btn-ghost" id="backBtn">All workspaces</button>
+        <div class="stage-titles">
+          <h2 id="stageTitle">Use case</h2>
+          <p id="stageMeta"></p>
+        </div>
+        <a class="btn btn-accent" id="stageOpen" href="#" target="_blank" rel="noopener">Open full page</a>
+      </div>
+      <iframe id="stageFrame" title="Use case"></iframe>
+    </div>
+  </body>
+</html>
