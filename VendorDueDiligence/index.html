@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · Vendor Due Diligence</title>
+    <meta name="description" content="Client demo: AI vendor screening, red-flag scoring, and governed sign-off." />
+    <meta name="theme-color" content="#f4f7f6" id="themeColorMeta" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        if (t === "dark") document.documentElement.classList.add("gf-theme-dark");
+        else document.documentElement.classList.add("gf-theme-light");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="assets/data.js" defer></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <div class="shell" id="app">
+      <aside class="sidebar">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <div class="brand-mark" aria-hidden="true">G</div>
+          <div class="brand-text">
+            <span class="brand-name">Genai<span>Forge</span></span>
+            <span class="brand-product">Vendor Due Diligence</span>
+          </div>
+        </a>
+        <nav class="side-nav">
+          <p class="nav-label">Workspace</p>
+          <button type="button" class="nav-item active" data-panel="dashboard">Dashboard</button>
+          <button type="button" class="nav-item" data-panel="vendors">Vendors <span class="nav-count" id="navVendors">0</span></button>
+          <p class="nav-label">Risk modules</p>
+          <button type="button" class="nav-item" data-panel="dd">Due Diligence</button>
+          <button type="button" class="nav-item" data-panel="report">Report</button>
+          <button type="button" class="nav-item" data-panel="monitor">Monitoring <span class="nav-count" id="navMonitor">0</span></button>
+          <button type="button" class="nav-item" data-panel="forms">Questionnaires</button>
+          <button type="button" class="nav-item" data-panel="scoring">Risk scoring</button>
+          <button type="button" class="nav-item" data-panel="controls">Controls</button>
+          <button type="button" class="nav-item" data-panel="audit">Audit pack</button>
+          <button type="button" class="nav-item" data-panel="procurement">Procurement</button>
+          <button type="button" class="nav-item" data-panel="m1">M1 Snapshot</button>
+        </nav>
+        <div class="side-foot"><span class="badge badge-demo">Presentation</span></div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <div>
+            <h1 class="page-title" id="pageTitle">Dashboard</h1>
+            <p class="page-sub" id="pageSub">Third-party risk overview</p>
+          </div>
+          <div class="topbar-controls" style="display:flex;align-items:center;gap:0.55rem">
+            <span class="ctx-chip" id="ctxVendor">—</span>
+            <button type="button" id="themeToggle" class="btn btn-ghost" aria-label="Toggle theme">
+              <span class="theme-sun">Light</span><span class="theme-moon">Dark</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="view" id="view-dashboard" data-view>
+            <div class="narrative-rail" id="narrativeRail"></div>
+            <div class="kpi-row" id="kpiRow"></div>
+            <div class="dash-grid">
+              <div class="card">
+                <div class="card-head">
+                  <div>
+                    <h2>Vendors by risk band</h2>
+                    <p>Portfolio distribution</p>
+                  </div>
+                </div>
+                <div class="band-bars" id="bandBars"></div>
+              </div>
+              <div class="card">
+                <div class="card-head">
+                  <div>
+                    <h2>14-day screening volume</h2>
+                    <p>Runs completed (illustrative)</p>
+                  </div>
+                </div>
+                <div class="pad" id="sparkHost"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Recent runs</h2>
+                  <p>Click a row to load that vendor everywhere</p>
+                </div>
+                <button type="button" class="btn btn-accent btn-sm" data-goto="vendors">Open registry</button>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table" id="recentTable">
+                  <thead><tr><th>Vendor</th><th>When</th><th>Score</th><th>Decision</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card" id="dashBuyer"></div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>TPRM research pulse</h2>
+                  <p>Industry themes · demo/illustrative citations · GenAIForge next actions</p>
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" data-goto="monitor">Open monitoring</button>
+              </div>
+              <div class="theme-feed" id="themeFeed"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-vendors" data-view hidden>
+            <div class="vendors-layout">
+              <div class="card">
+                <div class="card-head">
+                  <div>
+                    <h2>Vendor registry</h2>
+                    <p id="vendorFilterMeta">Search · filter · select</p>
+                  </div>
+                  <button type="button" class="btn btn-accent" data-goto="dd">Open Due Diligence</button>
+                </div>
+                <div class="filters">
+                  <input type="search" id="vendorSearch" placeholder="Search name, CIN, city…" />
+                  <select id="bandFilter">
+                    <option value="">All risk bands</option>
+                    <option>Critical</option>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                  </select>
+                  <select id="countryFilter">
+                    <option value="">All countries</option>
+                    <option>IN</option>
+                    <option>US</option>
+                  </select>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table" id="vendorTable">
+                    <thead><tr><th>Legal name</th><th>Band</th><th>Country</th><th>Category</th><th>Status</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card" id="vendorDrawer"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-dd" data-view hidden>
+            <div class="split">
+              <div class="card">
+                <div class="card-head">
+                  <div>
+                    <h2 id="ddVendorName">—</h2>
+                    <p id="ddVendorMeta">—</p>
+                  </div>
+                  <button type="button" class="btn btn-accent" id="runDdBtn">Run screening</button>
+                </div>
+                <div class="card-body">
+                  <div class="progress-head">
+                    <span id="ddTimer">Idle</span>
+                    <span id="ddPct">0%</span>
+                  </div>
+                  <div class="progress-track"><div class="progress-fill" id="ddProgress" style="width:0%"></div></div>
+                  <ol class="steps" id="ddSteps"></ol>
+                  <div class="run-log" id="runLog" hidden></div>
+                </div>
+              </div>
+              <div class="card score-card" id="scoreCard" hidden>
+                <div class="score-hero">
+                  <div class="score-num" id="scoreNum">—</div>
+                  <div>
+                    <div class="score-rating" id="scoreRating">—</div>
+                    <div class="score-decision" id="scoreDecision">—</div>
+                    <p class="score-summary" id="scoreSummary"></p>
+                  </div>
+                </div>
+                <div class="band-meter">
+                  <div class="band-meter-track"><div class="band-meter-needle" id="bandNeedle" style="left:50%"></div></div>
+                </div>
+                <div class="band-legend" id="bandLegend"></div>
+                <ul class="conditions" id="conditionsList"></ul>
+                <div class="row-actions">
+                  <button type="button" class="btn btn-accent" data-goto="report">Open Report</button>
+                  <button type="button" class="btn btn-ghost" id="signoffBtn" disabled>Sign off</button>
+                </div>
+                <div class="suggest" id="reportSuggest" hidden>
+                  <span>Screening complete — open the governed Report next.</span>
+                  <button type="button" class="btn btn-accent btn-sm" data-goto="report">Open Report</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="view-report" data-view hidden>
+            <div class="flag-grid">
+              <div class="card">
+                <div class="card-head"><h2>Red flags</h2></div>
+                <div class="flag-card" id="redFlags"></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><h2>Green flags</h2></div>
+                <div class="flag-card" id="greenFlags"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Findings &amp; detail</h2>
+                  <p id="reportVendorName">—</p>
+                </div>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center">
+                  <div class="tabs" id="reportTabs">
+                    <button type="button" class="tab active" data-tab="overview">Overview</button>
+                    <button type="button" class="tab" data-tab="legal">Legal</button>
+                    <button type="button" class="tab" data-tab="compliance">Compliance</button>
+                    <button type="button" class="tab" data-tab="findings">Findings</button>
+                  </div>
+                  <button type="button" class="btn btn-ghost btn-sm" id="pdfBtn">Export PDF</button>
+                </div>
+              </div>
+              <div class="tab-body" id="tabBody"><p class="muted">Run screening first to populate the report.</p></div>
+              <div id="signoffState"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-m1" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>M1 outsourcing classification</h2>
+                  <p>Light touch — full classifier lives in the Risk app</p>
+                </div>
+              </div>
+              <div class="m1-layout" id="m1Row"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-monitor" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Continuous monitoring</h2>
+                  <p>Certs · cyber · nth-party · questionnaires — cadence by risk tier</p>
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" id="ackAlertBtn">Ack selected alerts</button>
+              </div>
+              <p class="pad muted" id="monitorPitch">Periodic questionnaires leave a blind spot — continuous signals keep examiner answers current.</p>
+              <div id="monitorList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-forms" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>VDD questionnaires</h2>
+                  <p id="formsMeta">Assignment status · export</p>
+                </div>
+                <button type="button" class="btn btn-accent btn-sm" id="exportFormsBtn">Export forms</button>
+              </div>
+              <div id="formsList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-scoring" data-view hidden>
+            <div class="card" id="scoringBoard"></div>
+          </section>
+
+          <section class="view" id="view-controls" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Policy / control mapping</h2>
+                  <p>Findings → controls → frameworks</p>
+                </div>
+              </div>
+              <div id="controlsList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-audit" data-view hidden>
+            <div class="card" id="auditBoard"></div>
+          </section>
+
+          <section class="view" id="view-procurement" data-view hidden>
+            <div class="card" id="procBoard"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+  </body>
+</html>

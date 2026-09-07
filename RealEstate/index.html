@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · Real Estate Sales Command Center</title>
+    <meta
+      name="description"
+      content="Client-winning demo: &lt;60s lead response, 24/7 qualify, right buyer to right unit — GenAIForge."
+    />
+    <meta name="theme-color" content="#f7f8fa" id="themeColorMeta" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        if (t === "dark") document.documentElement.classList.add("gf-theme-dark");
+        else document.documentElement.classList.add("gf-theme-light");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="assets/data.js" defer></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M4 18L12 4l8 14H4z"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Genai<span>Forge</span></span>
+            <span class="brand-product">Real Estate · Sales Command</span>
+          </div>
+        </a>
+
+        <nav class="project-tabs" id="projectTabs" aria-label="Projects"></nav>
+
+        <div class="topbar-spacer"></div>
+
+        <div class="topbar-controls">
+          <button type="button" id="themeToggle" class="btn btn-ghost theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon-sun" aria-hidden="true">Light</span>
+            <span class="theme-icon-moon" aria-hidden="true">Dark</span>
+          </button>
+          <span class="badge badge-demo">Presentation</span>
+          <button type="button" class="btn btn-accent" id="qualifierToggle">Lead Qualifier</button>
+        </div>
+      </header>
+
+      <!-- Hero: full-bleed project photo -->
+      <section class="hero" id="hero" aria-label="Project hero">
+        <div class="hero-media" id="heroMedia"></div>
+        <div class="hero-veil"></div>
+        <div class="hero-content">
+          <div class="hero-chips">
+            <span class="chip chip-speed" id="speedChip">&lt;60s · 38s avg</span>
+            <span class="chip chip-live"><span class="live-dot"></span> Voice agent live</span>
+          </div>
+          <p class="hero-city" id="heroCity">Pune</p>
+          <h1 class="hero-title" id="heroTitle">Skyline Residences</h1>
+          <p class="hero-tag" id="heroTag">3 towers · 2–4 BHK · Baner corridor</p>
+          <p class="hero-proof" id="heroProof">47 leads today · 62% qualified · 11 visits booked</p>
+          <div class="hero-actions">
+            <button type="button" class="btn btn-accent btn-lg" id="watchLiveBtn">Watch live qualify</button>
+            <button type="button" class="btn btn-ghost-light" id="scrollMatchBtn">See buyer ↔ unit match</button>
+          </div>
+        </div>
+      </section>
+
+      <main class="main">
+        <!-- Site plan + match -->
+        <section class="workspace" id="workspace">
+          <article class="panel panel-plan">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Interest on site plan</h2>
+                <p class="panel-sub">Heat = number of buyers interested · click a tower zone</p>
+              </div>
+              <div class="plan-legend">
+                <span class="leg-heat">Interest volume</span>
+                <span class="leg-visit">Visit today</span>
+              </div>
+            </div>
+            <div class="plan-canvas" id="sitePlan" role="img" aria-label="Project site plan with interest heat"></div>
+          </article>
+
+          <article class="panel panel-match" id="matchStrip">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title" id="matchTitle">Match intelligence</h2>
+                <p class="panel-sub" id="matchSub">Select a heat zone on the site plan</p>
+              </div>
+              <span class="match-count" id="matchCount"></span>
+            </div>
+            <div class="match-grid">
+              <div class="match-col">
+                <h3 class="match-col-title">Interested buyers</h3>
+                <div class="buyer-list" id="buyerList"></div>
+              </div>
+              <div class="match-col">
+                <h3 class="match-col-title">Suggested inventory</h3>
+                <div class="inventory-list" id="inventoryList"></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- Live voice qualify -->
+        <section class="live-call" id="liveCall" aria-label="Live voice qualify">
+          <div class="live-head">
+            <div>
+              <p class="live-eyebrow"><span class="live-dot"></span> NOW ON CALL · demo scripted</p>
+              <h2 class="live-title" id="liveTitle">Priya Sharma · Qualify</h2>
+              <p class="live-meta" id="liveMeta">Hindi · 99acres · Tower A 3BHK</p>
+            </div>
+            <div class="live-actions">
+              <button type="button" class="btn btn-ghost" id="liveReset">Restart</button>
+              <button type="button" class="btn btn-accent" id="liveNext">Advance conversation</button>
+            </div>
+          </div>
+          <div class="waveform" id="waveform" aria-hidden="true"></div>
+          <div class="transcript" id="transcript" role="log" aria-live="polite"></div>
+        </section>
+
+        <!-- Visit rail -->
+        <section class="visits-rail panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Today’s site visits</h2>
+              <p class="panel-sub">Reminders drive show-ups · click to open qualifier</p>
+            </div>
+            <div class="visit-summary" id="visitSummary"></div>
+          </div>
+          <div class="visit-track" id="visitTrack"></div>
+        </section>
+
+        <section class="outcomes" aria-label="Outcomes">
+          <div class="outcome"><strong>&lt;60s</strong><span>Speed to first contact</span></div>
+          <div class="outcome"><strong>24/7</strong><span>Lead coverage</span></div>
+          <div class="outcome"><strong>↑ Show-ups</strong><span>Reminders &amp; nurture</span></div>
+          <div class="outcome"><strong>Right fit</strong><span>Buyer → unit matching</span></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>GenAIForge — AI that works in the real world. Lead qualification &amp; site-visit booking for developers.</p>
+        <p>
+          <a href="https://genaiforge.in" target="_blank" rel="noopener">genaiforge.in</a>
+          ·
+          <a href="mailto:contactus@genaiforge.in">contactus@genaiforge.in</a>
+        </p>
+      </footer>
+    </div>
+
+    <div class="qualifier-backdrop" id="qualifierBackdrop" hidden></div>
+    <aside class="qualifier" id="qualifier" hidden aria-label="Lead Qualifier">
+      <div class="qualifier-head">
+        <div>
+          <h2 class="qualifier-title">Lead Qualifier</h2>
+          <p class="qualifier-guard">Floating side chat · scripted demo · human owns close</p>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" id="qualifierClose" aria-label="Close">✕</button>
+      </div>
+      <div class="qualifier-lead" id="qualifierLead"></div>
+      <div class="qualifier-messages" id="qualifierMessages" role="log"></div>
+      <div class="suggestions" id="qualifierSuggestions"></div>
+      <form class="qualifier-input" id="qualifierForm">
+        <input type="text" id="qualifierInput" placeholder="Qualify, match, book visit…" autocomplete="off" />
+        <button type="submit" class="btn btn-accent">Send</button>
+      </form>
+    </aside>
+
+    <div class="toast" id="toast" role="status"></div>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" class="gf-theme-light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · Patient Access Command Center</title>
+    <meta
+      name="description"
+      content="24/7 booking, no-show risk calendar, protocol triage — assistive only, 0 diagnoses."
+    />
+    <meta name="theme-color" content="#f5f8fb" id="themeColorMeta" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        var root = document.documentElement;
+        root.classList.remove("gf-theme-light", "gf-theme-dark");
+        if (t === "dark") root.classList.add("gf-theme-dark");
+        else root.classList.add("gf-theme-light");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="assets/data.js" defer></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5" />
+              <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Genai<span>Forge</span></span>
+            <span class="brand-product">Healthcare · Patient Access</span>
+          </div>
+        </a>
+
+        <nav class="clinic-tabs" id="clinicTabs" aria-label="Clinics"></nav>
+
+        <div class="topbar-spacer"></div>
+
+        <div class="topbar-controls">
+          <span class="badge badge-assistive">Assistive only · 0 diagnoses</span>
+          <button type="button" id="themeToggle" class="btn btn-ghost theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon-sun" aria-hidden="true">Light</span>
+            <span class="theme-icon-moon" aria-hidden="true">Dark</span>
+          </button>
+          <span class="badge badge-demo">Presentation</span>
+          <button type="button" class="btn btn-accent" id="assistToggle">Patient Assistant</button>
+        </div>
+      </header>
+
+      <section class="hero" id="hero" aria-label="Clinic proof">
+        <div class="hero-media" id="heroMedia"></div>
+        <div class="hero-veil"></div>
+        <div class="hero-content">
+          <p class="hero-site" id="heroSite">Bandra West Care Hub</p>
+          <h1 class="hero-title" id="heroTitle">Patient Access Command Center</h1>
+          <p class="hero-sub" id="heroSub">24/7 booking · no-show risk · protocol triage — clinicians stay in charge.</p>
+          <div class="hero-proofs" id="heroProofs"></div>
+          <div class="hero-actions">
+            <button type="button" class="btn btn-accent btn-lg" id="watchDemoBtn">Watch book + reminder</button>
+            <button type="button" class="btn btn-ghost-light" id="scrollCalBtn">Open risk calendar</button>
+          </div>
+        </div>
+      </section>
+
+      <main class="main" id="main">
+        <section class="workspace">
+          <article class="panel panel-cal">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Day calendar</h2>
+                <p class="panel-sub" id="dayLabel">Today · risk on every booked slot</p>
+              </div>
+              <div class="risk-legend">
+                <span class="leg risk-low">Low</span>
+                <span class="leg risk-mid">Mid</span>
+                <span class="leg risk-high">High</span>
+              </div>
+            </div>
+            <div class="cal-grid" id="calGrid" role="list"></div>
+          </article>
+
+          <article class="panel panel-intake">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Intake summary</h2>
+                <p class="panel-sub">Click a slot — never a diagnosis</p>
+              </div>
+            </div>
+            <div class="intake-body" id="intakeBody">
+              <p class="intake-empty">Select a booked slot to view assistive intake.</p>
+            </div>
+          </article>
+        </section>
+
+        <section class="lower">
+          <article class="panel panel-proto">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Protocol walkthrough</h2>
+                <p class="panel-sub">Steps → urgency route · no disease names</p>
+              </div>
+            </div>
+            <div class="proto-tabs" id="protoTabs"></div>
+            <ol class="proto-steps" id="protoSteps"></ol>
+            <p class="proto-route" id="protoRoute"></p>
+          </article>
+
+          <article class="panel panel-esc">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Escalation queue</h2>
+                <p class="panel-sub">PII masked until Claim</p>
+              </div>
+            </div>
+            <ul class="esc-list" id="escList"></ul>
+          </article>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>GenAIForge — Patient Engagement &amp; Triage. Assistive only · clinicians always in charge.</p>
+        <p>
+          <a href="https://genaiforge.in" target="_blank" rel="noopener">genaiforge.in</a>
+          ·
+          <a href="mailto:contactus@genaiforge.in">contactus@genaiforge.in</a>
+        </p>
+      </footer>
+    </div>
+
+    <div class="assist-backdrop" id="assistBackdrop" hidden></div>
+    <aside class="assist" id="assist" hidden aria-label="Patient Assistant">
+      <div class="assist-head">
+        <div>
+          <h2 class="assist-title">Patient Assistant</h2>
+          <p class="assist-guard">Floating side chat · 0 diagnoses · demo scripts</p>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" id="assistClose" aria-label="Close">✕</button>
+      </div>
+      <div class="assist-messages" id="assistMessages" role="log"></div>
+      <div class="suggestions" id="assistSuggestions"></div>
+      <form class="assist-input" id="assistForm">
+        <input type="text" id="assistInput" placeholder="Book, remind, protocol… never diagnose" autocomplete="off" />
+        <button type="submit" class="btn btn-accent btn-sm">Send</button>
+      </form>
+    </aside>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

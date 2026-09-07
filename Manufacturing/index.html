@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · Manufacturing Predictive Maintenance</title>
+    <meta
+      name="description"
+      content="Client showcase: plant analytics + AI predictive-maintenance copilot by GenAIForge."
+    />
+    <meta name="theme-color" content="#f4f7fa" id="themeColorMeta" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        if (t !== "light" && t !== "dark") t = "light";
+        document.documentElement.setAttribute("data-theme", t);
+        var m = document.getElementById("themeColorMeta");
+        if (m) m.setAttribute("content", t === "light" ? "#f4f7fa" : "#070a0e");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+    <script src="assets/data.js" defer></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M4 16L12 4l8 12H4z"
+                stroke="#2ec4b6"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <path d="M8 16l4-6 4 6" stroke="#7eb0d0" stroke-width="1.4" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Genai<span>Forge</span></span>
+            <span class="brand-product">Manufacturing · Predictive Maintenance</span>
+          </div>
+        </a>
+
+        <div class="topbar-spacer"></div>
+
+        <div class="topbar-controls">
+          <button
+            type="button"
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Switch to light mode"
+            title="Toggle light / dark mode"
+          >
+            <span class="theme-toggle-track" aria-hidden="true">
+              <span class="theme-toggle-thumb"></span>
+              <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6" />
+                <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4l1.4-1.4M17 7l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+              <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 7 7 0 1 0 20 14.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="theme-toggle-label" id="themeToggleLabel">Dark</span>
+          </button>
+          <div class="field">
+            <label for="plantSelect">Plant</label>
+            <select id="plantSelect" aria-label="Select plant"></select>
+          </div>
+          <span class="badge badge-demo">Presentation</span>
+          <time class="clock" id="clock" datetime=""></time>
+        </div>
+      </header>
+
+      <div class="main" id="mainLayout">
+        <div class="content">
+          <section class="floor-hero" aria-label="Plant floor schematic">
+            <article class="panel panel-hero">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">Plant floor · live schematic</h2>
+                  <p class="panel-sub" id="floorSubtitle">Click a line to highlight assets · cell OEE last shift</p>
+                </div>
+                <div class="floor-legend" aria-hidden="true">
+                  <span class="leg-healthy">Healthy</span>
+                  <span class="leg-watch">Watch</span>
+                  <span class="leg-critical">Critical</span>
+                </div>
+              </div>
+              <div class="panel-body floor-body">
+                <div class="floor-wrap" id="floorSchematic" role="img" aria-label="Interactive plant floor layout"></div>
+                <div class="line-detail" id="lineDetail" hidden></div>
+              </div>
+            </article>
+          </section>
+
+          <section class="kpi-strip kpi-compact" id="kpiStrip" aria-label="Plant KPIs"></section>
+
+          <section class="grid-main">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">OEE &amp; downtime</h2>
+                  <p class="panel-sub">14-day trend · planned vs unplanned</p>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="chart-wrap tall">
+                  <canvas id="oeeChart" aria-label="OEE and downtime chart"></canvas>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel panel-span-sensor">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">Asset sensors</h2>
+                  <p class="panel-sub" id="sensorSubtitle">Select an asset</p>
+                </div>
+                <div class="legend">
+                  <span class="leg-vib">Vibration</span>
+                  <span class="leg-temp">Temp °C</span>
+                  <span class="leg-amp">Current A</span>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="sensor-meta" id="sensorMeta"></div>
+                <div class="chart-wrap">
+                  <canvas id="sensorChart" aria-label="Sensor trend chart"></canvas>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="grid-lower">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">Risk-ranked assets</h2>
+                  <p class="panel-sub" id="assetListSubtitle">RUL · failure probability · click to inspect</p>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="asset-list" id="assetList" role="list"></div>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2 class="panel-title">Line cell heatmap</h2>
+                  <p class="panel-sub">Per-cell OEE · selected line or all</p>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="line-list" id="lineHealth"></div>
+              </div>
+            </article>
+          </section>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2 class="panel-title">Work orders</h2>
+                <p class="panel-sub">AI drafts only — approval stays with maintenance</p>
+              </div>
+            </div>
+            <div class="panel-body" style="overflow-x: auto">
+              <table class="wo-table">
+                <thead>
+                  <tr>
+                    <th>WO</th>
+                    <th>Asset</th>
+                    <th>Title</th>
+                    <th>Priority</th>
+                    <th>Source</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="woBody"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="ai-stack" id="aiStack" aria-label="AI recommendations and alerts">
+        <div class="ai-stack-head">
+          <span class="ai-stack-label">PM Copilot</span>
+          <button type="button" class="btn btn-sm btn-ghost" id="expandChat" aria-expanded="false">
+            Expand chat
+          </button>
+        </div>
+        <div class="ai-stack-cards" id="aiStackCards"></div>
+      </div>
+
+      <aside class="copilot-float" id="copilot" aria-label="Predictive maintenance AI copilot" hidden>
+        <div class="copilot-head">
+          <div>
+            <h2 class="copilot-title">PM Copilot</h2>
+            <p class="copilot-guard">
+              Recommendation only · human must approve work orders · demo scripted replies
+            </p>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" id="copilotClose" aria-label="Close copilot">
+            Close
+          </button>
+        </div>
+        <div class="copilot-messages" id="copilotMessages" role="log" aria-live="polite"></div>
+        <div class="suggestions" id="copilotSuggestions"></div>
+        <form class="copilot-input" id="copilotForm">
+          <input
+            type="text"
+            id="copilotInput"
+            placeholder="Ask about lines, RUL, alerts…"
+            autocomplete="off"
+            aria-label="Message the maintenance copilot"
+          />
+          <button type="submit" class="btn btn-accent">Send</button>
+        </form>
+      </aside>
+
+      <footer class="site-footer">
+        <p>
+          GenAIForge — AI that works in the real world. Predictive-maintenance copilots for the plant
+          floor.
+        </p>
+        <p>
+          <a href="https://genaiforge.in" target="_blank" rel="noopener">genaiforge.in</a>
+          ·
+          <a href="mailto:contactus@genaiforge.in">contactus@genaiforge.in</a>
+        </p>
+      </footer>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+  </body>
+</html>

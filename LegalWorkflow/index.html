@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GenAIForge · LegalOS</title>
+    <meta name="description" content="Client demo: MSA automation, LegalBot, and contract risk review." />
+    <meta name="theme-color" content="#f7f6f3" id="themeColorMeta" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("gf-theme");
+        if (t === "dark") document.documentElement.classList.add("gf-theme-dark");
+        else document.documentElement.classList.add("gf-theme-light");
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="assets/data.js" defer></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <div class="shell" id="app">
+      <aside class="sidebar">
+        <a class="brand" href="https://genaiforge.in" target="_blank" rel="noopener">
+          <div class="brand-mark" aria-hidden="true">G</div>
+          <div class="brand-text">
+            <span class="brand-name">Genai<span>Forge</span></span>
+            <span class="brand-product">LegalOS</span>
+          </div>
+        </a>
+        <nav class="side-nav">
+          <p class="nav-label">Workspace</p>
+          <button type="button" class="nav-item active" data-panel="dashboard">Dashboard</button>
+          <button type="button" class="nav-item" data-panel="tasks">Task Manager <span class="nav-count" id="navTasks">0</span></button>
+          <button type="button" class="nav-item" data-panel="matters">Matters <span class="nav-count" id="navMatters">0</span></button>
+          <p class="nav-label">Modules</p>
+          <button type="button" class="nav-item" data-panel="msa">MSA Automation <span class="nav-count" id="navMsa">0</span></button>
+          <button type="button" class="nav-item" data-panel="legalbot">LegalBot</button>
+          <button type="button" class="nav-item" data-panel="compare">Comparison</button>
+          <button type="button" class="nav-item" data-panel="playbooks">Playbooks</button>
+          <button type="button" class="nav-item" data-panel="templates">Templates</button>
+          <button type="button" class="nav-item" data-panel="obligations">Obligations</button>
+          <button type="button" class="nav-item" data-panel="radar">Radar <span class="nav-count" id="navRadar">0</span></button>
+          <p class="nav-label">Trust</p>
+          <button type="button" class="nav-item" data-panel="trust">Trust center</button>
+        </nav>
+        <div class="side-foot"><span class="badge badge-demo">Presentation</span></div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <div>
+            <h1 class="page-title" id="pageTitle">Dashboard</h1>
+            <p class="page-sub" id="pageSub">Legal work overview</p>
+          </div>
+          <div class="topbar-controls">
+            <button type="button" id="themeToggle" class="btn btn-ghost" aria-label="Toggle theme">
+              <span class="theme-sun">Light</span><span class="theme-moon">Dark</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="view" id="view-dashboard" data-view>
+            <div class="hero-legal card" id="legalHero"></div>
+            <div class="kpi-row" id="dashTiles"></div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>AI daily brief</h2>
+                  <p id="briefLine">—</p>
+                </div>
+              </div>
+              <div class="action-chips" id="briefActions"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Recent activity</h2>
+                  <p>Last handoffs across LegalOS</p>
+                </div>
+              </div>
+              <ul class="activity-list" id="recentActivity"></ul>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>CLM buyer research pulse</h2>
+                  <p>2026 RFP themes · demo/illustrative citations · GenAIForge next actions</p>
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" data-goto="trust">Trust center</button>
+              </div>
+              <div class="theme-feed" id="buyerThemeFeed"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-tasks" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Task board</h2>
+                  <p id="taskMeta">Priority filters · claim · complete</p>
+                </div>
+              </div>
+              <div class="filters" id="taskFilters">
+                <button type="button" class="filter-chip active" data-prio="all">All</button>
+                <button type="button" class="filter-chip" data-prio="P0">P0</button>
+                <button type="button" class="filter-chip" data-prio="P1">P1</button>
+                <button type="button" class="filter-chip" data-prio="P2">P2</button>
+                <button type="button" class="filter-chip" data-prio="P3">P3</button>
+              </div>
+              <div class="task-groups" id="taskBoard"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-msa" data-view hidden>
+            <div class="split">
+              <div class="card list-card">
+                <div class="card-head"><h2>MSA trackers</h2><p>Risk scores · stage</p></div>
+                <ul class="item-list" id="msaList"></ul>
+              </div>
+              <div class="card">
+                <div class="card-head">
+                  <div>
+                    <h2 id="msaTitle">—</h2>
+                    <p id="msaSub">—</p>
+                  </div>
+                  <button type="button" class="btn btn-accent" id="advanceMsaBtn">Advance stage</button>
+                </div>
+                <div class="timeline-rail" id="msaTimeline"></div>
+                <div class="review-grid">
+                  <div class="doc-pane">
+                    <h3>Contract excerpt</h3>
+                    <div class="doc-body" id="docBody"></div>
+                  </div>
+                  <div class="ai-pane">
+                    <h3>AI review</h3>
+                    <div class="risk-badge" id="riskBadge">—</div>
+                    <ul id="suggestions"></ul>
+                    <div class="memory" id="msaMemory"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="view-legalbot" data-view hidden>
+            <div class="card chat-panel">
+              <div class="card-head chat-head">
+                <div class="chat-brand">
+                  <div class="chat-mark" aria-hidden="true">LB</div>
+                  <div>
+                    <h2>LegalBot</h2>
+                    <p>Playbook-cited counsel · Review · Research · Draft</p>
+                  </div>
+                </div>
+                <div class="chat-head-tools">
+                  <div class="mode-chips" id="modeChips"></div>
+                  <button type="button" class="btn btn-ghost btn-sm" id="clearChatBtn">Clear</button>
+                </div>
+              </div>
+              <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+              <div class="chat-dock">
+                <p class="chat-dock-label">Suggested prompts</p>
+                <div class="chat-suggestions" id="chatSuggestions"></div>
+                <div class="chat-composer">
+                  <input type="text" id="chatInput" placeholder="Ask about a clause, risk, or draft…" autocomplete="off" />
+                  <button type="button" class="btn btn-accent chat-send" id="chatSendBtn">Send</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="view-compare" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Document comparison</h2>
+                  <p id="diffMeta">—</p>
+                </div>
+              </div>
+              <div class="compare-layout">
+                <div>
+                  <div class="diff-nav" id="diffNav"></div>
+                  <div class="diff-view" id="diffView"></div>
+                </div>
+                <aside class="risk-side">
+                  <h3>Risk flags</h3>
+                  <div id="riskFlags"></div>
+                </aside>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="view-playbooks" data-view hidden>
+            <div class="card" id="playbookBoard"></div>
+          </section>
+
+          <section class="view" id="view-radar" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Legal news / regulatory radar</h2>
+                  <p>Regulatory items + buyer RFP themes · cited illustratively</p>
+                </div>
+              </div>
+              <div id="radarList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-templates" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Contract templates library</h2>
+                  <p>Approved clause packs</p>
+                </div>
+                <button type="button" class="btn btn-accent btn-sm" id="useTplBtn">Use in MSA</button>
+              </div>
+              <div id="tplList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-obligations" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Obligation tracker</h2>
+                  <p>Post-signature milestones · renewals · SOC2 delivery — where CLM value is won</p>
+                </div>
+              </div>
+              <div id="oblList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-matters" data-view hidden>
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Matters / intake</h2>
+                  <p>New request types · SLA</p>
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" id="newMatterBtn">Log intake (demo)</button>
+              </div>
+              <div id="matterList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-trust" data-view hidden>
+            <div id="trustBoard"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+  </body>
+</html>
